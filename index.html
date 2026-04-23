@@ -36,8 +36,14 @@ body{font-family:Georgia,'Times New Roman',serif;background:var(--bg);color:var(
 .fc-fbtn{font-family:system-ui,sans-serif;font-size:12px;font-weight:500;padding:5px 13px;border-radius:20px;border:.5px solid var(--border2);background:var(--surface);color:var(--txt2);cursor:pointer;transition:all .15s}
 .fc-fbtn:hover,.fc-fbtn.on{background:var(--blue-bg);color:var(--blue-t);border-color:var(--blue)}
 .fc-count{font-family:system-ui,sans-serif;font-size:12px;color:var(--txt3);margin-bottom:14px}
-.fc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-.fc-card{height:200px;perspective:1000px;cursor:pointer}
+.fc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:1200px){.fc-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:768px){.fc-grid{grid-template-columns:1fr}}
+.fc-card{height:200px;perspective:1000px;cursor:pointer;position:relative}
+.fc-card .fc-checkbox{position:absolute;top:8px;right:8px;z-index:20;cursor:pointer;appearance:none;width:22px;height:22px;border:2px solid var(--border2);border-radius:4px;background:white;transition:all .15s}
+.fc-card .fc-checkbox:hover{border-color:var(--blue);box-shadow:0 0 0 2px rgba(24,95,165,.15)}
+.fc-card .fc-checkbox:checked{background:var(--blue);border-color:var(--blue)}
+.fc-card .fc-checkbox:checked::after{content:'✓';position:absolute;top:-3px;left:4px;color:white;font-weight:bold;font-size:15px}
 .fc-inner{position:relative;width:100%;height:100%;transition:transform .42s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d}
 .fc-card.flip .fc-inner{transform:rotateY(180deg)}
 .fc-f,.fc-b{position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--rlg);padding:18px;display:flex;flex-direction:column}
@@ -87,9 +93,11 @@ body{font-family:Georgia,'Times New Roman',serif;background:var(--bg);color:var(
 .sg-ans-body p:last-child{margin-bottom:0}
 .sg-ans-body strong{font-family:system-ui,sans-serif;font-size:13px;font-weight:700;display:block;margin-bottom:3px;color:var(--txt2)}
 /* ====================================================== CHEAT SHEET */
-.cs-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.cs-grid{display:grid;grid-template-columns:1fr;gap:14px}
+@media(max-width:768px){.cs-grid{grid-template-columns:1fr}}
 .cs-card{background:var(--surface);border:.5px solid var(--border);border-radius:var(--rlg);padding:17px 19px}
 .cs-card.full{grid-column:1/-1}
+.cs-card:first-child{grid-column:1/-1}
 .cs-ctitle{font-family:system-ui,sans-serif;font-size:11px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;color:var(--txt2);margin-bottom:13px;padding-bottom:8px;border-bottom:.5px solid var(--border)}
 .cs-step{display:flex;gap:9px;margin-bottom:10px;align-items:flex-start}
 .cs-snum{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:system-ui,sans-serif;font-size:10px;font-weight:700;flex-shrink:0;background:var(--blue-bg);color:var(--blue-t)}
@@ -130,6 +138,12 @@ code{font-family:'Courier New',monospace;font-size:11.5px;background:var(--s2);p
     <button class="fc-fbtn" onclick="filterFC('regression',this)">Regression</button>
     <button class="fc-fbtn" onclick="filterFC('correlated',this)">Correlated Data</button>
     <button class="fc-fbtn" onclick="filterFC('logistic',this)">Logistic Regression</button>
+  </div>
+  <div style="display:flex;gap:10px;margin-bottom:16px;align-items:center;flex-wrap:wrap">
+    <button class="fc-fbtn on" onclick="filterStatus('all',this)">📚 All Cards</button>
+    <button class="fc-fbtn" onclick="filterStatus('reviewed',this)">✅ Reviewed</button>
+    <button class="fc-fbtn" onclick="filterStatus('unreviewed',this)">⭕ To Review</button>
+    <span style="font-size:12px;color:var(--txt3);margin-left:auto">☑️ Check the box in top-right corner to mark cards</span>
   </div>
   <div class="fc-count" id="fc-count"></div>
   <div class="fc-grid" id="fc-grid"></div>
@@ -275,8 +289,9 @@ const CARDS = [
     back:`<p>When you run many tests at once, the chance of getting at least one false positive by accident goes up. Bonferroni is a simple fix.</p>
 <p><b>How it works:</b> multiply each raw p-value by the number of tests you're running (k). Then compare the adjusted p-value to α = 0.05.</p>
 <p>Example: 6 pairwise tests, raw p-value = 0.012 → adjusted = 0.012 × 6 = 0.072 → NOT significant at 5% after correction.</p>
+<p><b>How to count k (number of tests):</b> For a factor with k levels, the number of pairwise comparisons is C(k,2) = k(k−1)/2. For k=4 groups: 4×3/2 = 6 pairs.</p>
 <p>Important: count only the tests that are <em>relevant to your question</em>, not all tests SAS produces.</p>`,
-    eg:`4 groups → C(4,2) = 6 pairs → multiply each p-value by 6.<br>3 groups → C(3,2) = 3 pairs → multiply each p-value by 3.` },
+    eg:`4 groups → C(4,2) = 6 pairwise comparisons → multiply each p-value by 6.<br>3 groups → C(3,2) = 3 pairwise comparisons → multiply each p-value by 3.` },
 
   // ─── REGRESSION ───────────────────────────────────────────────────
   { topic:'regression', tag:'Regression', c:'teal',
@@ -374,6 +389,45 @@ const CARDS = [
 <p>For significance: same rule as linear regression — compare p-value to α = 0.05.</p>
 <p>Optional (advanced): Odds Ratio = exp(β). OR > 1 → increases odds. OR < 1 → decreases odds.</p>`,
     eg:`β(score) = 1.147, p < 0.0001 → positive and significant → "Higher score is associated with a higher probability of success (Y = 1)."` },
+
+  // ─── ADVANCED TOPICS ──────────────────────────────────────────────────
+  { topic:'regression', tag:'Regression', c:'teal',
+    front:'How do you detect multicollinearity from SAS output?',
+    back:`<p><b>Look for these warning signs in regression output:</b></p>
+<p><b>1. VIF (Variance Inflation Factor)</b> — found in SAS proc REG output<br>
+• VIF ≥ 4 → possible multicollinearity concern<br>
+• VIF ≥ 10 → serious multicollinearity problem</p>
+<p><b>2. Correlation matrix</b> — check correlations between explanatory variables<br>
+• r ≥ 0.7 or r ≤ −0.7 → strong correlation between two predictors → likely multicollinearity</p>
+<p><b>3. In SAS model output:</b><br>
+• Large standard errors on coefficients<br>
+• Wide confidence intervals<br>
+• Coefficient values change dramatically when you add/remove variables<br>
+• A variable is not significant alone, but becomes significant when another variable is removed</p>
+<p><b>Key point:</b> Multicollinearity makes inference unreliable (tests, CIs), but prediction is still OK.</p>`,
+    eg:`Two predictors have r = 0.81 → strong correlation → check VIF. If VIF = 4.2, multicollinearity is likely. Coefficient estimates may be unreliable; do not trust individual significance tests.` },
+
+  { topic:'anova', tag:'ANOVA', c:'blue',
+    front:'How do you read an interaction plot?',
+    back:`<p>An interaction plot shows the estimated mean response for each combination of factor levels. Two lines appear (one for each level of the second factor).</p>
+<p><b>No interaction:</b> The two lines are <b>parallel</b> → the effect of one factor is the same regardless of the other factor's level.</p>
+<p><b>Interaction present:</b> The two lines are <b>not parallel</b> → they may fan out, cross, or have different slopes → the effect of one factor depends on the level of the other.</p>
+<p><b>Why this matters:</b> The interaction plot is visual evidence. To confirm, run an F-test for the interaction term in the ANOVA table.<br>
+• Parallel lines + non-significant interaction → use additive model<br>
+• Non-parallel lines + significant interaction → interaction model is appropriate</p>
+<p><b>Important:</b> A plot that looks non-parallel is not proof of interaction — you must run the statistical test.</p>`,
+    eg:`Interaction plot shows lines crossing: line A increases with factor level, line B decreases → likely interaction → perform F-test for interaction term.` },
+
+  { topic:'basics', tag:'Basics First', c:'purple',
+    front:'What is Welch\'s t-test and when do you use it?',
+    back:`<p>Welch's t-test is a t-test for comparing the means of <b>two independent groups</b> when the variances are <b>unequal</b> (heteroscedastic).</p>
+<p><b>Why use it instead of standard t-test?</b> The standard t-test assumes equal variances. If this assumption is violated, the p-values and confidence intervals become unreliable. Welch's test does not make this assumption.</p>
+<p><b>When to use it:</b><br>
+• Comparing two groups with very different spreads (one group much more variable than the other)<br>
+• Detected via boxplots (one box is much wider) or by a formal test<br>
+• In proc TTEST (the default in SAS is Welch's test; the standard t-test is an option)</p>
+<p><b>In the exam context:</b> When doing pairwise comparisons with heteroscedastic data, use proc TTEST for Welch's t-tests and apply Bonferroni correction manually (multiply each p-value by k, the number of comparisons).</p>`,
+    eg:`Boxplot shows group A has wide spread, group B has narrow spread → use Welch's t-test. With 4 groups and 6 pairwise tests, multiply each proc TTEST p-value by 6 for Bonferroni correction.` },
 
 ];
 
@@ -479,26 +533,64 @@ const CHEAT_SHEET = [
   {
     title:'Bonferroni quick reference',
     html:`<table class="cs-table">
-<thead><tr><th>Number of groups (k)</th><th>Pairwise tests = C(k,2)</th><th>Multiply each p by</th></tr></thead>
+<thead><tr><th>Number of groups (k)</th><th>Number of pairwise tests</th><th>Multiply each p by</th></tr></thead>
 <tbody>
-<tr><td>2 groups</td><td>1 pair</td><td>×1 (no correction needed)</td></tr>
+<tr><td>2 groups</td><td>1 pair</td><td>×1 (no correction)</td></tr>
 <tr><td>3 groups</td><td>3 pairs</td><td>×3</td></tr>
 <tr><td>4 groups</td><td>6 pairs</td><td>×6</td></tr>
 <tr><td>5 groups</td><td>10 pairs</td><td>×10</td></tr>
 </tbody></table>
 <div style="margin-top:12px;padding:10px;background:var(--s2);border-radius:7px;font-size:12.5px;line-height:1.65;color:var(--txt2);font-family:system-ui,sans-serif">
-<b style="color:var(--txt)">With interaction (2 factors):</b><br>
-Simple effects of Factor A at each level of B:<br>
-The total number of relevant tests when interaction is significant:<br>
-Count C(k,2) pairs for EACH level of the other factor, then add them up.<br><br>
-Example: 3 levels of Factor A, 2 levels of Factor B:<br>
-— Pairs at Factor B level 1: C(3,2) = 3<br>
-— Pairs at Factor B level 2: C(3,2) = 3<br>
-— Total k = 3 + 3 = <b style="color:var(--txt)">6 tests → multiply each p-value by 6</b><br><br>
-Example: 4 levels of Factor A, 2 levels of Factor B:<br>
-— Pairs at Factor B level 1: C(4,2) = 6<br>
-— Pairs at Factor B level 2: C(4,2) = 6<br>
-— Total k = 6 + 6 = <b style="color:var(--txt)">12 tests → multiply each p-value by 12</b>
+<b style="color:var(--txt)">Understanding the formula — C(k,2):</b><br>
+C(k,2) means "combinations of k things taken 2 at a time" = the number of unique pairs you can make from k groups.<br>
+Formula: C(k,2) = k × (k−1) ÷ 2<br>
+• C(3,2) = 3 × 2 ÷ 2 = <b style="color:var(--txt)">3 pairs</b><br>
+• C(4,2) = 4 × 3 ÷ 2 = <b style="color:var(--txt)">6 pairs</b><br>
+• C(5,2) = 5 × 4 ÷ 2 = <b style="color:var(--txt)">10 pairs</b><br><br>
+
+<b style="color:var(--txt)">With interaction (2 factors) — Simple effects:</b><br>
+When interaction is significant, you test the effect of Factor A <b>separately at each level of Factor B.</b><br><br>
+<b style="color:var(--txt)">Example: 3 levels of Factor A, 2 levels of Factor B</b><br>
+• At Factor B level 1: compare all 3 levels of A pairwise → C(3,2) = 3 pairs<br>
+• At Factor B level 2: compare all 3 levels of A pairwise → C(3,2) = 3 pairs<br>
+• <b style="color:var(--txt)">Total = 3 + 3 = 6 relevant tests → multiply each p-value by 6</b><br><br>
+
+<b style="color:var(--txt)">Example: 4 levels of Factor A, 2 levels of Factor B</b><br>
+• At Factor B level 1: C(4,2) = 6 pairs<br>
+• At Factor B level 2: C(4,2) = 6 pairs<br>
+• <b style="color:var(--txt)">Total = 6 + 6 = 12 relevant tests → multiply each p-value by 12</b><br><br>
+
+<span style="color:var(--txt)"><b>Key point:</b> When testing simple effects with interaction, count pairs <em>within each subgroup</em> separately, then sum them for the total Bonferroni correction.</span>
+</div>`
+  },
+  {
+    title:'Heteroscedasticity & Welch\'s t-test',
+    full:true,
+    html:`<b style="font-size:13px;color:var(--txt)">Detecting unequal variances (heteroscedasticity):</b><br>
+1. <b>Boxplots:</b> One group's box is visibly wider/taller than others → suspect heteroscedasticity<br>
+2. <b>Formal test:</b> In SAS, Levene's test can confirm (not taught in 60605A)<br>
+3. <b>In data:</b> One group has much larger spread than another<br><br>
+
+<b style="font-size:13px;color:var(--txt)">Why it matters:</b><br>
+• Standard ANOVA (proc GLM pairwise tests) assumes equal variances<br>
+• If variances are unequal, standard tests give unreliable p-values and CIs<br>
+• Solution: Use Welch's test instead, available via proc TTEST<br><br>
+
+<b style="font-size:13px;color:var(--txt)">How to do pairwise comparisons with heteroscedasticity:</b><br>
+1. Use proc TTEST (Welch's t-test is the default)<br>
+2. Run one t-test for each pair of groups<br>
+3. Apply <b>Bonferroni correction manually</b>: multiply each p-value by k (number of pairs)<br>
+4. Compare adjusted p-values to α = 0.05<br><br>
+
+<b style="font-size:13px;color:var(--txt)">Example:</b><br>
+4 helmet models, variances unequal → 6 pairwise comparisons needed<br>
+• Run 6 proc TTEST analyses (one for each pair)<br>
+• Multiply each p-value by 6 (Bonferroni)<br>
+• Conclude based on adjusted p-values<br><br>
+
+<div style="background:var(--s2);padding:10px;border-radius:7px;margin-top:10px;font-size:12.5px;color:var(--txt2);">
+<b style="color:var(--txt);font-family:system-ui,sans-serif">Template sentence for your answer:</b><br>
+"Since the data are heteroscedastic (variances differ across groups), standard ANOVA pairwise tests are not appropriate. We therefore use Welch's t-tests (proc TTEST) and apply a Bonferroni correction by multiplying each p-value by [k]."
 </div>`
   },
   {
@@ -525,41 +617,86 @@ const TAG_COL = {
 
 function renderFC() {
   const grid = document.getElementById('fc-grid');
-  CARDS.forEach(c => {
+  CARDS.forEach((c, idx) => {
     const col = TAG_COL[c.c] || TAG_COL.blue;
     const el = document.createElement('div');
     el.className = 'fc-card';
     el.dataset.topic = c.topic;
-    el.onclick = () => el.classList.toggle('flip');
+    el.dataset.index = idx;
+    
+    const isReviewed = localStorage.getItem(`fc-reviewed-${idx}`) === 'true';
+    
     const extra = c.formula
       ? `<div class="fc-formula">${c.formula.replace(/\n/g,'<br>')}</div>`
       : (c.eg ? `<div class="fc-eg"><b>Example:</b> ${c.eg}</div>` : '');
-    el.innerHTML = `<div class="fc-inner">
-      <div class="fc-f">
-        <span class="fc-tag" style="background:${col.bg};color:${col.t}">${c.tag}</span>
-        <div class="fc-title">${c.front}</div>
-        <div class="fc-hint">Click to flip ↻</div>
+    
+    el.innerHTML = `
+      <input type="checkbox" class="fc-checkbox" ${isReviewed ? 'checked' : ''}>
+      <div class="fc-inner">
+        <div class="fc-f">
+          <span class="fc-tag" style="background:${col.bg};color:${col.t}">${c.tag}</span>
+          <div class="fc-title">${c.front}</div>
+          <div class="fc-hint">Click to flip ↻</div>
+        </div>
+        <div class="fc-b">
+          <div class="fc-blabel">Explanation</div>
+          <div class="fc-btext">${c.back}${extra}</div>
+        </div>
       </div>
-      <div class="fc-b">
-        <div class="fc-blabel">Explanation</div>
-        <div class="fc-btext">${c.back}${extra}</div>
-      </div>
-    </div>`;
+    `;
+    
+    // Flip on inner click
+    el.querySelector('.fc-inner').onclick = (e) => {
+      e.stopPropagation();
+      el.classList.toggle('flip');
+    };
+    
+    // Checkbox handling
+    const checkbox = el.querySelector('.fc-checkbox');
+    checkbox.onclick = (e) => {
+      e.stopPropagation();
+      const isChecked = checkbox.checked;
+      localStorage.setItem(`fc-reviewed-${idx}`, isChecked);
+      updateCount();
+    };
+    
     grid.appendChild(el);
   });
-  document.getElementById('fc-count').textContent = `Showing all ${CARDS.length} cards`;
+  updateCount();
+}
+
+function updateCount() {
+  const visible = document.querySelectorAll('.fc-card:not([style*="display: none"])');
+  const reviewed = Array.from(visible).filter(c => c.querySelector('.fc-checkbox').checked).length;
+  const total = visible.length;
+  document.getElementById('fc-count').textContent = `Showing ${total} card${total!==1?'s':''} (${reviewed}/${total} reviewed)`;
 }
 
 function filterFC(topic, btn) {
   document.querySelectorAll('.fc-fbtn').forEach(b => b.classList.remove('on'));
   btn.classList.add('on');
-  let n = 0;
   document.querySelectorAll('.fc-card').forEach(c => {
     const show = topic === 'all' || c.dataset.topic === topic;
     c.style.display = show ? '' : 'none';
-    if (show) n++;
   });
-  document.getElementById('fc-count').textContent = `Showing ${n} card${n!==1?'s':''}`;
+  updateCount();
+}
+
+function filterStatus(status, btn) {
+  const statusBtns = btn.parentElement.querySelectorAll('button');
+  statusBtns.forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  document.querySelectorAll('.fc-card').forEach(c => {
+    const isChecked = c.querySelector('.fc-checkbox').checked;
+    if (status === 'all') {
+      c.style.display = '';
+    } else if (status === 'reviewed') {
+      c.style.display = isChecked ? '' : 'none';
+    } else if (status === 'unreviewed') {
+      c.style.display = !isChecked ? '' : 'none';
+    }
+  });
+  updateCount();
 }
 
 const BC = {blue:{bg:'#e6f1fb',t:'#0c447c'},teal:{bg:'#e1f5ee',t:'#085041'},amber:{bg:'#faeeda',t:'#633806'},purple:{bg:'#eeedfe',t:'#3c3489'}};
