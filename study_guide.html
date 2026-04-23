@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>60605A Final Exam Study Guide</title>
+<style>
+  :root {
+    --bg: #f8f7f4;
+    --surface: #ffffff;
+    --surface2: #f1efe8;
+    --border: rgba(0,0,0,0.12);
+    --border2: rgba(0,0,0,0.22);
+    --text: #1a1a18;
+    --text2: #5f5e5a;
+    --text3: #888780;
+    --accent: #185fa5;
+    --accent-bg: #e6f1fb;
+    --accent-text: #0c447c;
+    --green: #3b6d11;
+    --green-bg: #eaf3de;
+    --green-text: #27500a;
+    --amber: #854f0b;
+    --amber-bg: #faeeda;
+    --amber-text: #633806;
+    --red: #a32d2d;
+    --red-bg: #fcebeb;
+    --red-text: #791f1f;
+    --purple: #534ab7;
+    --purple-bg: #eeedfe;
+    --purple-text: #3c3489;
+    --teal: #0f6e56;
+    --teal-bg: #e1f5ee;
+    --teal-text: #085041;
+    --radius: 10px;
+    --radius-lg: 14px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Georgia, 'Times New Roman', serif; background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.65; }
+  
+  /* NAV */
+  .nav { position: fixed; top: 0; left: 0; right: 0; background: var(--surface); border-bottom: 0.5px solid var(--border2); z-index: 100; display: flex; align-items: center; gap: 0; padding: 0 20px; height: 54px; }
+  .nav-brand { font-family: 'Helvetica Neue', Arial, sans-serif; font-weight: 600; font-size: 14px; color: var(--text); letter-spacing: -0.3px; margin-right: 24px; white-space: nowrap; }
+  .nav-tabs { display: flex; gap: 0; flex: 1; }
+  .nav-tab { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 13px; font-weight: 500; padding: 0 18px; height: 54px; display: flex; align-items: center; border: none; background: none; color: var(--text2); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; white-space: nowrap; }
+  .nav-tab:hover { color: var(--text); }
+  .nav-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* LAYOUT */
+  .page { display: none; padding: 74px 24px 40px; max-width: 960px; margin: 0 auto; }
+  .page.active { display: block; }
+
+  /* SECTION HEADERS */
+  .section-title { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 22px; font-weight: 600; color: var(--text); margin-bottom: 6px; letter-spacing: -0.5px; }
+  .section-sub { font-size: 14px; color: var(--text2); margin-bottom: 28px; }
+
+  /* ====== FLASHCARDS ====== */
+  .fc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+  .fc-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius-lg); cursor: pointer; perspective: 1000px; height: 200px; }
+  .fc-inner { position: relative; width: 100%; height: 100%; transition: transform 0.4s; transform-style: preserve-3d; }
+  .fc-card.flipped .fc-inner { transform: rotateY(180deg); }
+  .fc-front, .fc-back { position: absolute; inset: 0; backface-visibility: hidden; border-radius: var(--radius-lg); padding: 20px; display: flex; flex-direction: column; justify-content: center; }
+  .fc-front { background: var(--surface); border: 0.5px solid var(--border); }
+  .fc-back { background: var(--surface); border: 0.5px solid var(--border2); transform: rotateY(180deg); overflow-y: auto; justify-content: flex-start; }
+  .fc-tag { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 10px; padding: 3px 8px; border-radius: 20px; display: inline-block; align-self: flex-start; }
+  .fc-front-title { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 16px; font-weight: 600; color: var(--text); line-height: 1.4; }
+  .fc-front-hint { font-size: 12px; color: var(--text3); margin-top: 8px; }
+  .fc-back-title { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 12px; font-weight: 600; color: var(--text2); margin-bottom: 8px; }
+  .fc-back-text { font-size: 13px; color: var(--text); line-height: 1.55; }
+  .fc-formula { font-family: 'Courier New', monospace; font-size: 12px; background: var(--surface2); padding: 6px 10px; border-radius: 6px; margin-top: 8px; color: var(--accent-text); }
+  .fc-filter { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+  .fc-filter-btn { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 12px; padding: 5px 14px; border-radius: 20px; border: 0.5px solid var(--border2); background: var(--surface); color: var(--text2); cursor: pointer; transition: all 0.15s; }
+  .fc-filter-btn.active, .fc-filter-btn:hover { background: var(--accent-bg); color: var(--accent-text); border-color: var(--accent); }
+  .fc-progress { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 13px; color: var(--text2); margin-bottom: 16px; }
+
+  /* ====== STUDY GUIDE ====== */
+  .sg-task { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius-lg); margin-bottom: 20px; overflow: hidden; }
+  .sg-task-header { padding: 18px 20px; display: flex; align-items: center; gap: 12px; cursor: pointer; }
+  .sg-task-num { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 12px; font-weight: 600; flex-shrink: 0; }
+  .sg-task-title { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 15px; font-weight: 600; flex: 1; }
+  .sg-task-badge { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; }
+  .sg-task-arrow { font-size: 14px; color: var(--text3); transition: transform 0.2s; }
+  .sg-task.open .sg-task-arrow { transform: rotate(90deg); }
+  .sg-task-body { display: none; padding: 0 20px 20px; }
+  .sg-task.open .sg-task-body { display: block; }
+  .sg-sas-output { border: 0.5px solid var(--border2); border-radius: var(--radius); margin: 14px 0; overflow: hidden; }
+  .sg-sas-label { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.6px; text-transform: uppercase; background: var(--surface2); padding: 6px 12px; color: var(--text2); border-bottom: 0.5px solid var(--border); }
+  .sg-sas-img { width: 100%; display: block; }
+  .sg-question { background: var(--accent-bg); border-left: 3px solid var(--accent); border-radius: 0 var(--radius) var(--radius) 0; padding: 12px 16px; margin: 14px 0; font-size: 14px; color: var(--accent-text); }
+  .sg-textarea { width: 100%; border: 0.5px solid var(--border2); border-radius: var(--radius); padding: 12px; font-family: Georgia, serif; font-size: 14px; line-height: 1.6; min-height: 100px; resize: vertical; background: var(--surface); color: var(--text); margin: 8px 0; }
+  .sg-textarea:focus { outline: none; border-color: var(--accent); }
+  .sg-btn-row { display: flex; gap: 10px; margin-top: 8px; }
+  .sg-btn { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 13px; font-weight: 500; padding: 8px 18px; border-radius: var(--radius); cursor: pointer; border: 0.5px solid var(--border2); background: var(--surface); color: var(--text); transition: all 0.15s; }
+  .sg-btn:hover { background: var(--surface2); }
+  .sg-btn.primary { background: var(--accent); color: white; border-color: var(--accent); }
+  .sg-btn.primary:hover { opacity: 0.9; }
+  .sg-answer-box { display: none; border-radius: var(--radius); margin-top: 14px; overflow: hidden; }
+  .sg-answer-box.show { display: block; }
+  .sg-answer-header { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.6px; text-transform: uppercase; padding: 8px 14px; }
+  .sg-answer-body { padding: 14px 16px; font-size: 13.5px; line-height: 1.7; }
+  .sg-answer-body p { margin-bottom: 10px; }
+  .sg-answer-body p:last-child { margin-bottom: 0; }
+  .sg-answer-body strong { font-weight: 600; }
+  .sg-check-result { display: none; padding: 10px 14px; border-radius: var(--radius); margin-top: 8px; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 13px; }
+  .sg-check-result.show { display: block; }
+  .kw { background: var(--amber-bg); color: var(--amber-text); padding: 1px 5px; border-radius: 4px; font-size: 12px; font-family: 'Helvetica Neue', Arial, sans-serif; font-weight: 600; }
+
+  /* ====== CHEAT SHEET ====== */
+  .cs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .cs-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 18px 20px; }
+  .cs-card.full { grid-column: 1 / -1; }
+  .cs-card-title { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 0.5px solid var(--border); }
+  .cs-step { display: flex; gap: 10px; margin-bottom: 10px; align-items: flex-start; }
+  .cs-step-num { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 11px; font-weight: 700; flex-shrink: 0; background: var(--accent-bg); color: var(--accent-text); }
+  .cs-step-text { font-size: 13px; line-height: 1.5; color: var(--text); }
+  .cs-step-text strong { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 12px; color: var(--text2); }
+  .cs-phrase { background: var(--surface2); border-radius: 8px; padding: 8px 12px; margin-bottom: 8px; font-size: 13px; font-style: italic; color: var(--text); border-left: 3px solid var(--accent); }
+  .cs-phrase strong { font-style: normal; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 11px; font-weight: 700; color: var(--accent-text); display: block; margin-bottom: 2px; letter-spacing: 0.4px; text-transform: uppercase; }
+  .cs-lookup { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+  .cs-lookup-item { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 12px; background: var(--surface2); border: 0.5px solid var(--border); padding: 4px 10px; border-radius: 6px; color: var(--text2); }
+  .cs-lookup-item strong { color: var(--text); }
+  .cs-alert { background: var(--red-bg); border: 0.5px solid #f09595; border-radius: var(--radius); padding: 10px 14px; margin-bottom: 10px; font-size: 13px; color: var(--red-text); }
+  .cs-alert strong { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+  .cs-tip { background: var(--green-bg); border: 0.5px solid #c0dd97; border-radius: var(--radius); padding: 10px 14px; margin-bottom: 10px; font-size: 13px; color: var(--green-text); }
+  .cs-tip strong { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+  .cs-table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-top: 6px; }
+  .cs-table th { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; color: var(--text2); padding: 6px 10px; border-bottom: 0.5px solid var(--border2); text-align: left; }
+  .cs-table td { padding: 7px 10px; border-bottom: 0.5px solid var(--border); color: var(--text); vertical-align: top; }
+  .cs-table tr:last-child td { border-bottom: none; }
+  .badge { display: inline-block; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; padding: 2px 7px; border-radius: 20px; }
+  @media (max-width: 640px) { .cs-grid { grid-template-columns: 1fr; } .cs-card.full { grid-column: 1; } .fc-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-brand">60605A</div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPage('flashcards')">🃏 Flashcards</button>
+    <button class="nav-tab" onclick="showPage('studyguide')">📋 Study Guide</button>
+    <button class="nav-tab" onclick="showPage('cheatsheet')">📄 Cheat Sheet</button>
+  </div>
+</nav>
+
+<!-- ===== FLASHCARDS ===== -->
+<div id="flashcards" class="page active">
+  <div class="section-title">Key Concepts Flashcards</div>
+  <div class="section-sub">Click a card to flip and reveal the explanation. Filter by topic below.</div>
+  <div class="fc-filter">
+    <button class="fc-filter-btn active" onclick="filterCards('all', this)">All</button>
+    <button class="fc-filter-btn" onclick="filterCards('anova', this)">ANOVA</button>
+    <button class="fc-filter-btn" onclick="filterCards('regression', this)">Regression</button>
+    <button class="fc-filter-btn" onclick="filterCards('correlated', this)">Correlated Data</button>
+    <button class="fc-filter-btn" onclick="filterCards('logistic', this)">Logistic Regression</button>
+    <button class="fc-filter-btn" onclick="filterCards('inference', this)">Inference</button>
+  </div>
+  <div class="fc-progress" id="fc-progress">Showing all 24 cards</div>
+  <div class="fc-grid" id="fc-grid"></div>
+</div>
+
+<!-- ===== STUDY GUIDE ===== -->
+<div id="studyguide" class="page">
+  <div class="section-title">Quiz Preparation Study Guide</div>
+  <div class="section-sub">Practice tasks based on the three quiz preparation documents. Write your answer, then check against the model answer.</div>
+  <div id="sg-tasks"></div>
+</div>
+
+<!-- ===== CHEAT SHEET ===== -->
+<div id="cheatsheet" class="page">
+  <div class="section-title">Exam Cheat Sheet</div>
+  <div class="section-sub">Bring this to your exam. Decision processes, key phrases, SAS output guide, and exact wording to use in answers.</div>
+  <div class="cs-grid" id="cs-grid"></div>
+</div>
+
+<script>
+// ============================
+// DATA
+// ============================
+
+const FLASHCARDS = [
+  {
+    topic: 'anova',
+    tag: 'ANOVA', tagColor: 'blue',
+    front: 'One-Way ANOVA: What is it testing?',
+    back: 'Tests whether the mean of a response variable is the same across all levels (groups) of one categorical factor. H₀: μ₁ = μ₂ = … = μₖ. Uses an F-test. If p-value < α, at least two group means differ.',
+    formula: 'F = MSB / MSW  (between-group variance / within-group variance)'
+  },
+  {
+    topic: 'anova',
+    tag: 'ANOVA', tagColor: 'blue',
+    front: 'Homoscedastic vs. Heteroscedastic ANOVA',
+    back: 'Homoscedastic: assumes equal variances across all groups → use proc GLM. Heteroscedastic: variances differ across groups → use Welch\'s test (proc GLM with Welch option) or proc MIXED with group-specific variance. Check boxplots: if one box is much wider, suspect heteroscedasticity.',
+    formula: null
+  },
+  {
+    topic: 'anova',
+    tag: 'ANOVA', tagColor: 'blue',
+    front: 'Two-Way ANOVA: Additive vs. Interaction Model',
+    back: 'Additive: effect of Factor A is the same regardless of Factor B level. Lines in the interaction plot are parallel. Interaction model: effect of A depends on level of B. Lines are not parallel. Always test interaction first — if significant, do not interpret main effects globally.',
+    formula: 'Additive: μ = β₀ + βₐA + βᵦB\nInteraction: μ = β₀ + βₐA + βᵦB + βₐᵦA×B'
+  },
+  {
+    topic: 'anova',
+    tag: 'ANOVA', tagColor: 'blue',
+    front: 'Interaction: How to detect and interpret it',
+    back: 'Detection: If the interaction F-test p-value < α, interaction is significant. Visually: non-parallel lines in the interaction plot. Interpretation: the effect of one factor on the mean response changes depending on the level of the other factor. When interaction is present, you must estimate simple effects (one factor at each level of the other).',
+    formula: null
+  },
+  {
+    topic: 'inference',
+    tag: 'Inference', tagColor: 'purple',
+    front: 'Bonferroni Correction for Multiple Tests',
+    back: 'When performing k pairwise tests, multiply each p-value by k before comparing to α. This controls the overall (family-wise) Type I error rate at level α. Use "by hand" when interaction is present (SAS does all pairs including irrelevant ones). Sidak stepdown is less conservative and preferred when available.',
+    formula: 'Adjusted p-value = raw p-value × k'
+  },
+  {
+    topic: 'inference',
+    tag: 'Inference', tagColor: 'purple',
+    front: 'Type I vs. Type II Error',
+    back: 'Type I (α): Rejecting H₀ when it is true (false positive). Controlled by significance level α. Type II (β): Not rejecting H₀ when it is false (false negative). Bonferroni correction reduces Type I risk but increases Type II risk. There is always a trade-off.',
+    formula: null
+  },
+  {
+    topic: 'inference',
+    tag: 'Inference', tagColor: 'purple',
+    front: 'P-value: correct interpretation',
+    back: 'The p-value is the probability of observing results at least as extreme as those observed, assuming H₀ is true. It is NOT the probability that H₀ is true. Decision: if p-value < α → reject H₀. If p-value ≥ α → do not reject H₀ (but we cannot conclude H₀ is true).',
+    formula: null
+  },
+  {
+    topic: 'inference',
+    tag: 'Inference', tagColor: 'purple',
+    front: 'Welch\'s t-test vs. Student\'s t-test',
+    back: 'Student\'s t-test: assumes equal variances (homoscedastic). Welch\'s t-test: does NOT assume equal variances (heteroscedastic) — more robust and generally preferred. In SAS: proc TTEST produces both; use the Welch row. In proc GLM: use the Welch option for one-way ANOVA.',
+    formula: null
+  },
+  {
+    topic: 'regression',
+    tag: 'Regression', tagColor: 'teal',
+    front: 'Simple vs. Multiple Linear Regression',
+    back: 'Simple: one explanatory variable. Multiple: two or more explanatory variables. R² measures the proportion of variance in Y explained by the model. Adjusted R² penalizes for adding variables. Adding variables always increases R², but not necessarily adjusted R².',
+    formula: 'Avg Y = β₀ + β₁X₁ + β₂X₂ + … + βₖXₖ'
+  },
+  {
+    topic: 'regression',
+    tag: 'Regression', tagColor: 'teal',
+    front: 'Interpreting Regression Coefficients',
+    back: 'βⱼ is the estimated average change in Y for a 1-unit increase in Xⱼ, HOLDING ALL OTHER VARIABLES CONSTANT. This is the "ceteris paribus" interpretation — crucial in multiple regression. For an indicator variable (0/1), βⱼ is the estimated average difference between the two groups for the same values of other variables.',
+    formula: null
+  },
+  {
+    topic: 'regression',
+    tag: 'Regression', tagColor: 'teal',
+    front: 'Multicollinearity',
+    back: 'When explanatory variables are highly correlated with each other. Signs: large change in coefficient estimates when adding variables, large standard errors (wide confidence intervals), VIF > 4 (some say > 5 or 10). Consequence: inference (tests) is unreliable. Prediction is still valid. Check with correlation matrix and VIFs.',
+    formula: 'VIF = 1 / (1 − R²ᵢ)'
+  },
+  {
+    topic: 'regression',
+    tag: 'Regression', tagColor: 'teal',
+    front: 'Control Variables vs. Explanatory Variables',
+    back: 'Explanatory variable of interest: the variable whose effect we want to estimate (e.g. visualization type). Control variable: a variable included to remove confounding — we want to estimate the effect of the main variable for the same level of the control variable (e.g. experience level). Controls do not change the research question; they isolate it.',
+    formula: null
+  },
+  {
+    topic: 'regression',
+    tag: 'Regression', tagColor: 'teal',
+    front: 'Indicator (Dummy) Variable Coding',
+    back: 'For a categorical variable with k categories, create k−1 indicator variables. The omitted category is the reference. β for each indicator = estimated average difference vs. the reference category, holding other variables constant. Use a "class" statement in SAS to do this automatically.',
+    formula: 'e.g. educ2=1 if educ=2, else 0\neduc3=1 if educ=3, else 0\n(category 1 = reference)'
+  },
+  {
+    topic: 'regression',
+    tag: 'Regression', tagColor: 'teal',
+    front: 'Interaction between a categorical and continuous variable',
+    back: 'When the slope of the continuous variable differs across levels of the categorical variable. Include a product term: Xcat × Xcont. This allows different slopes for each category group. The interaction test H₀: all interaction coefficients = 0. If significant, the lines for each group are not parallel.',
+    formula: 'Avg Y = β₀ + β₁cat + β₂cont + β₃(cat×cont)'
+  },
+  {
+    topic: 'correlated',
+    tag: 'Correlated Data', tagColor: 'amber',
+    front: 'Why model correlation structure?',
+    back: 'When multiple observations come from the same subject or group, they are likely correlated — violating the independence assumption of standard linear models. Ignoring correlation leads to incorrect standard errors and p-values. Solution: add a correlation structure (e.g. Compound Symmetry) in proc MIXED. A scatterplot of repeated measures shows if correlation is present.',
+    formula: null
+  },
+  {
+    topic: 'correlated',
+    tag: 'Correlated Data', tagColor: 'amber',
+    front: 'Compound Symmetry (CS) Structure',
+    back: 'Assumes all pairs of observations within the same subject/group have the same correlation ρ, and all variances are equal. Appropriate when there are only 2 measures per group (only 1 correlation to estimate). In SAS: type=CS in the repeated statement of proc MIXED. Compare to no-correlation model using AIC/BIC.',
+    formula: 'Corr(εᵢ, εⱼ) = ρ for all i≠j within same group'
+  },
+  {
+    topic: 'correlated',
+    tag: 'Correlated Data', tagColor: 'amber',
+    front: 'AIC and BIC for Model Comparison',
+    back: 'Information criteria for comparing models — even non-nested ones. Lower AIC/BIC = better model (better fit penalized for complexity). BIC penalizes complexity more than AIC. Use these to compare: CS vs. independent errors, additive vs. interaction models (only when the fixed effects are the same). Do NOT compare via AIC/BIC when fixed parts differ.',
+    formula: 'AIC = −2×logL + 2p\nBIC = −2×logL + p×ln(n)'
+  },
+  {
+    topic: 'correlated',
+    tag: 'Correlated Data', tagColor: 'amber',
+    front: 'AR(1) vs. CS Correlation Structure',
+    back: 'AR(1) (autoregressive): correlation decreases as the time gap between observations increases — appropriate for time series within subjects. CS: all pairs equally correlated — appropriate for clustered data or when only 2 observations per group. With only 2 measures per group, AR(1) and CS are equivalent (both estimate one correlation).',
+    formula: 'AR(1): Corr(εₜ, εₜ₊ₖ) = ρᵏ'
+  },
+  {
+    topic: 'logistic',
+    tag: 'Logistic', tagColor: 'coral',
+    front: 'Logistic Regression: When and Why',
+    back: 'Use when the response variable is binary (0/1 indicator). Linear regression would predict probabilities outside [0,1]. Logistic regression models the log-odds, ensuring predicted probabilities stay between 0 and 1. In SAS: proc GLIMMIX with dist=binary link=logit.',
+    formula: 'log(p/1−p) = β₀ + β₁X₁ + … + βₖXₖ'
+  },
+  {
+    topic: 'logistic',
+    tag: 'Logistic', tagColor: 'coral',
+    front: 'Interpreting Logistic Regression Coefficients',
+    back: 'Cannot interpret the value directly as in linear regression. Sign tells the direction: positive β → higher X increases probability of Y=1. Negative β → higher X decreases probability. For precise magnitude, use odds ratios: OR = exp(β). At the 60605A level, interpreting the sign is sufficient.',
+    formula: 'OR = exp(β)'
+  },
+  {
+    topic: 'inference',
+    tag: 'Inference', tagColor: 'purple',
+    front: 'R² — What It Means and Its Limits',
+    back: 'R² = proportion of total variance in Y explained by the model. Range: 0 to 1 (or 0% to 100%). Interpretation: "The model explains X% of the observed variation in [response variable]." Important: high R² does not mean the model is valid (could have wrong functional form). Low R² does not mean variables are unimportant.',
+    formula: 'R² = 1 − SSresidual / SStotal'
+  },
+  {
+    topic: 'regression',
+    tag: 'Regression', tagColor: 'teal',
+    front: 'Validity Conditions for Linear Regression',
+    back: '1. Linearity: the relationship between Y and each X is linear. 2. Independence: observations (errors) are independent. 3. Normality: errors follow a normal distribution. 4. Homoscedasticity: error variance is constant. Check with scatterplots, residual plots, and normality tests. Non-linearity can be addressed with transformations.',
+    formula: null
+  },
+  {
+    topic: 'anova',
+    tag: 'ANOVA', tagColor: 'blue',
+    front: 'Simple Effects in Two-Way ANOVA with Interaction',
+    back: 'When interaction is significant, estimate the effect of Factor A at each level of Factor B (and vice versa). Number of tests = (k−1) × levels of B. Apply Bonferroni correction using this total number. Example: 4 models × 2 impact types = 6 + 6 = 12 comparisons; multiply each p-value by 12.',
+    formula: null
+  },
+  {
+    topic: 'inference',
+    tag: 'Inference', tagColor: 'purple',
+    front: 'Cause vs. Correlation in Observational Studies',
+    back: 'Randomized experiment: can conclude causality. Observational study: can only conclude association/correlation — NOT causation. Always state: "The data show that [X] is associated with [Y], on average" rather than "[X] causes [Y]" in observational settings. Quiz 2/3 context: the study is an experiment with randomized visualization type → causality for visualization type only.',
+    formula: null
+  }
+];
+
+const TOPICS_COLOR = {
+  blue: { bg: '#e6f1fb', text: '#0c447c' },
+  purple: { bg: '#eeedfe', text: '#3c3489' },
+  teal: { bg: '#e1f5ee', text: '#085041' },
+  amber: { bg: '#faeeda', text: '#633806' },
+  coral: { bg: '#faece7', text: '#993c1d' }
+};
+
+// ============================
+// Study Guide Tasks
+// ============================
+const IMG_PLACEHOLDER = (label) => `
+  <div class="sg-sas-output">
+    <div class="sg-sas-label">SAS Output — ${label}</div>
+    <div style="padding:16px; font-size:13px; color:var(--text2); font-family:'Helvetica Neue',Arial,sans-serif; font-style:italic;">
+      [Refer to your SAS output for this analysis — the image is embedded in the original quiz document]
+    </div>
+  </div>`;
+
+const TASKS = [
+  {
+    num: 1,
+    title: 'Two-Way ANOVA: Testing for Interaction (Quiz 1 Focus)',
+    badge: 'ANOVA', badgeColor: 'blue',
+    context: 'You are studying the effect of visualization type (3 levels) and scenario complexity (2 levels) on the time to make a recommendation. You have fitted a two-way ANOVA model with interaction.',
+    sasDesc: 'The SAS output below (from the ANOVA lecture slides) shows the F-tests for a two-way ANOVA model with interaction between delay type and stage of progress.',
+    sasImg: 'anova_interaction',
+    questions: [
+      {
+        q: 'Based on the SAS output, is the interaction between the two factors statistically significant? State your hypotheses and conclusion.',
+        keywords: ['H0', 'H1', 'interaction', 'p-value', 'significance level', 'reject', 'do not reject'],
+        answer: `<p><strong>Hypotheses:</strong> H₀: the effect of visualization type on mean time does not depend on scenario complexity (i.e., no interaction); H₁: the effect of visualization type on mean time differs depending on the level of scenario complexity (i.e., interaction is present).</p>
+<p><strong>Decision:</strong> The p-value for the interaction term is less than 0.0001, which is less than α = 5%. We reject H₀.</p>
+<p><strong>Conclusion:</strong> At the 5% significance level, the data show that there is a statistically significant interaction between visualization type and scenario complexity in their effect on the mean time to make a recommendation. The effect of visualization type on mean time is therefore not the same at both levels of scenario complexity, and vice versa.`
+      }
+    ]
+  },
+  {
+    num: 2,
+    title: 'Two-Way ANOVA: Estimating Main Effects (No Interaction)',
+    badge: 'ANOVA', badgeColor: 'blue',
+    context: 'When no significant interaction is found, you interpret the overall (main) effects of each factor. The output below shows the additive two-way ANOVA results for the delay × stage study (ANOVA lecture).',
+    sasDesc: 'SAS output: overall effect of the "delay" factor (lsmeans, additive model)',
+    sasImg: 'anova_lsmeans',
+    questions: [
+      {
+        q: 'Estimate and test the overall effect of the "delay" factor on mean perceived time, accounting for stage of progress. Use α = 5%.',
+        keywords: ['estimated', 'average', 'on average', 'holding', 'for a given', 'p-value', 'significant'],
+        answer: `<p><strong>Effect estimate:</strong> Controlling for stage of progress, the mean perceived time is estimated to be 3.62 minutes longer when the delay is of type 1 rather than of type 2, on average. [Other pairwise estimates would be stated similarly from the lsmeans table.]</p>
+<p><strong>Test for overall effect of delay:</strong> H₀: the mean perceived time is the same for all delay types, for a given stage of progress; H₁: at least two delay types differ in mean perceived time, for a given stage of progress.</p>
+<p>The p-value is less than 0.0001 < α = 5%. We reject H₀.</p>
+<p><strong>Conclusion:</strong> At the 5% significance level, the data establish that delay type has a statistically significant effect on mean perceived time, once stage of progress is taken into account.</p>`
+      }
+    ]
+  },
+  {
+    num: 3,
+    title: 'Pairwise Comparisons with Bonferroni Correction',
+    badge: 'ANOVA', badgeColor: 'blue',
+    context: 'With a significant interaction or multiple group comparisons, you need to perform pairwise tests and apply a Bonferroni correction. The output shows pairwise comparison p-values from the delay × stage study.',
+    sasDesc: 'SAS output: pairwise comparison table with and without Sidak correction (ANOVA lecture, slide 25)',
+    sasImg: 'anova_pairwise',
+    questions: [
+      {
+        q: 'There are 3 delay types and 2 stages. If the interaction is significant and you want to compare the delay types at each level of stage, how many tests are relevant? Apply a Bonferroni correction and state your conclusion.',
+        keywords: ['Bonferroni', 'multiply', 'overall significance', 'adjusted p-value', 'tests'],
+        answer: `<p><strong>Number of relevant tests:</strong> For each of the 2 stages, there are C(3,2) = 3 pairwise comparisons of the 3 delay types. Total: 3 × 2 = 6 relevant tests.</p>
+<p><strong>Bonferroni correction:</strong> Multiply each raw p-value by 6. Then compare the corrected p-value to α = 5%.</p>
+<p><strong>Conclusion format:</strong> At the overall 5% significance level, the data show that [describe which pairs differ and which do not, for each level of stage]. For example: "When stage = 1 (close to goal), the mean evaluation score is significantly different between delay types 1 and 2 (adjusted p-value = X × 6 = Y < 0.05), but not between delay types 1 and 3 (adjusted p-value = Z × 6 = W > 0.05)."</p>`
+      }
+    ]
+  },
+  {
+    num: 4,
+    title: 'Multiple Linear Regression: Estimating and Interpreting Coefficients (Quiz 2)',
+    badge: 'Regression', badgeColor: 'teal',
+    context: 'Quiz 2 requires fitting models with visualization type (categorical), experience (Exp_data, continuous), and domain familiarity (Domain_fam, continuous) as predictors of Time and Confidence. You must interpret each coefficient precisely.',
+    sasDesc: 'Refer to the SAS output from your Model 2 (Time ~ Visualization + Exp_data + Domain_fam)',
+    sasImg: null,
+    questions: [
+      {
+        q: 'Your model output shows β for Exp_data = −0.85 with p-value = 0.03. State what this means in precise, professional language.',
+        keywords: ['estimated', 'on average', 'holding', 'significant', 'p-value', 'α'],
+        answer: `<p><strong>Effect estimate:</strong> Controlling for visualization type and domain familiarity, an increase of 1 unit in experience in data analysis and interpretation is associated with a decrease of 0.85 units in the average time to make a recommendation, on average.</p>
+<p><strong>Significance test:</strong> H₀: β(Exp_data) = 0; H₁: β(Exp_data) ≠ 0. The p-value is 0.03 < α = 5%. We reject H₀.</p>
+<p><strong>Conclusion:</strong> At the 5% significance level, the data establish that experience in data analysis and interpretation has a statistically significant effect on mean time to make a recommendation, once visualization type and domain familiarity are taken into account.</p>
+<p><strong>Note on causality:</strong> Because visualization type was randomly assigned but experience was not, we cannot conclude that experience causes changes in time. We can only state that experience and time are associated.</p>`
+      }
+    ]
+  },
+  {
+    num: 5,
+    title: 'Interaction between Categorical and Continuous Variable (Quiz 3, Part 2)',
+    badge: 'Regression', badgeColor: 'teal',
+    context: 'Quiz 3 asks you to fit models with an interaction between visualization type (categorical) and Exp_data (continuous). This means the slope of Exp_data differs across visualization types.',
+    sasDesc: 'Refer to SAS output from Model 3 (Time ~ Visualization + Exp_data + Domain_fam + Visualization×Exp_data)',
+    sasImg: null,
+    questions: [
+      {
+        q: 'Suppose the interaction is significant (p < 0.05). For a given type of visualization (say, visualization A), describe how you would estimate and test the effect of Exp_data on mean time.',
+        keywords: ['β', 'slope', 'for visualization A', 'significant', 'one unit increase'],
+        answer: `<p><strong>Setup:</strong> When Visualization = A, the model becomes: Average Time = (β₀ + β_A) + (β_Exp + β_Exp×A) × Exp_data. Therefore, the slope of Exp_data when Visualization = A is β_Exp + β_Exp×A.</p>
+<p><strong>Estimation:</strong> For visualization type A, a 1-unit increase in experience in data analysis and interpretation is associated with a change of (β̂_Exp + β̂_Exp×A) units in the average time to make a recommendation, on average (holding domain familiarity constant).</p>
+<p><strong>Test:</strong> To test whether this slope is significant for visualization A, we need a test on H₀: β_Exp + β_Exp×A = 0. This is not directly available in the SAS output when A is not the reference category. To obtain this test, refit the model with visualization A as the reference category.</p>
+<p><strong>Conclusion format:</strong> At the 5% significance level, the data [establish / do not establish] that experience in data analysis and interpretation has a statistically significant effect on mean time, for participants using visualization type A.</p>`
+      }
+    ]
+  },
+  {
+    num: 6,
+    title: 'Correlated Data: Choosing and Justifying a Model',
+    badge: 'Correlated Data', badgeColor: 'amber',
+    context: 'In the vibro-kinetic seat experiment, each participant provided two measurements (one per seat type). You must decide whether to model correlation and justify the choice.',
+    sasDesc: 'Refer to the scatterplot of EDA measurements per subject from the correlated data exercises.',
+    sasImg: null,
+    questions: [
+      {
+        q: 'Justify the use of a Compound Symmetry correlation structure for this experiment. Then state which model (CS vs. independence) is preferred and why.',
+        keywords: ['two measurements', 'same participant', 'correlated', 'AIC', 'BIC', 'CS', 'independent'],
+        answer: `<p><strong>Justification for CS:</strong> In this experiment, two measurements were taken from each of the 29 participants — one with the vibro-kinetic seat and one with the standard seat. Observations from the same participant are likely correlated: participants who have a higher baseline level of electrodermal activity tend to show higher values with both seat types. The scatterplot of the two measurements per participant shows a positive association, supporting the use of a correlation structure.</p>
+<p><strong>Why CS is appropriate:</strong> Since there are only two observations per participant (one group = one subject), there is only a single correlation to estimate within each group. All correlation structures (CS, AR(1), etc.) reduce to the same single-parameter model in this case. Compound Symmetry is therefore appropriate and sufficient.</p>
+<p><strong>Model selection:</strong> Both the AIC and BIC criteria favor the model with a CS correlation structure over the model assuming independence. This, combined with the subject-matter arguments above, leads us to prefer the CS model.</p>`
+      }
+    ]
+  }
+];
+
+// ============================
+// Cheat Sheet Sections
+// ============================
+const CS_SECTIONS = [
+  {
+    title: 'Decision Process: Which Test / Model to Use',
+    full: true,
+    content: `<table class="cs-table">
+      <thead><tr><th>Situation</th><th>Test / Model</th><th>SAS procedure</th></tr></thead>
+      <tbody>
+        <tr><td>Compare means of 2 groups, equal variances</td><td>Student's t-test</td><td>proc TTEST (pooled row)</td></tr>
+        <tr><td>Compare means of 2 groups, unequal variances</td><td>Welch's t-test</td><td>proc TTEST (Satterthwaite row)</td></tr>
+        <tr><td>Compare means of k≥2 groups, equal variances</td><td>One-way ANOVA (F-test)</td><td>proc GLM</td></tr>
+        <tr><td>Compare means of k groups, unequal variances</td><td>Welch's test (one-way)</td><td>proc GLM (Welch option)</td></tr>
+        <tr><td>Two factors, test for interaction</td><td>Two-way ANOVA with interaction</td><td>proc GLM (factor1*factor2)</td></tr>
+        <tr><td>Response = continuous, predictors = mix</td><td>Multiple linear regression</td><td>proc GLM or proc REG</td></tr>
+        <tr><td>Repeated measures / clustered data</td><td>Mixed model with CS (or AR1)</td><td>proc MIXED</td></tr>
+        <tr><td>Binary (0/1) response variable</td><td>Logistic regression</td><td>proc GLIMMIX (dist=binary)</td></tr>
+      </tbody>
+    </table>`
+  },
+  {
+    title: 'Analysis Process: ANOVA (Step by Step)',
+    content: `
+      <div class="cs-step"><div class="cs-step-num">1</div><div class="cs-step-text"><strong>Descriptive</strong> — Compute group means, SDs, boxplots. Compare dispersions visually.</div></div>
+      <div class="cs-step"><div class="cs-step-num">2</div><div class="cs-step-text"><strong>Homoscedasticity?</strong> — If variances look unequal, use Welch. Otherwise, use standard F-test.</div></div>
+      <div class="cs-step"><div class="cs-step-num">3</div><div class="cs-step-text"><strong>Two factors?</strong> — Test interaction first (lsmeans factor1*factor2). If significant → simple effects. If not → drop interaction, interpret main effects.</div></div>
+      <div class="cs-step"><div class="cs-step-num">4</div><div class="cs-step-text"><strong>Pairwise comparisons</strong> — Count relevant tests k. Apply Bonferroni (×k). Use Sidak stepdown if available in SAS (adjust=sidak stepdown).</div></div>
+      <div class="cs-step"><div class="cs-step-num">5</div><div class="cs-step-text"><strong>Interpret</strong> — State estimate, direction, unit, condition ("for a given X"), significance.</div></div>
+    `
+  },
+  {
+    title: 'Analysis Process: Multiple Regression (Step by Step)',
+    content: `
+      <div class="cs-step"><div class="cs-step-num">1</div><div class="cs-step-text"><strong>Descriptive</strong> — Scatterplots (Y vs. each X), correlation matrix. Spot linearity, outliers.</div></div>
+      <div class="cs-step"><div class="cs-step-num">2</div><div class="cs-step-text"><strong>Fit model</strong> — Include all relevant predictors. Categorical variables → indicator coding or class statement.</div></div>
+      <div class="cs-step"><div class="cs-step-num">3</div><div class="cs-step-text"><strong>R²</strong> — State what proportion of variance is explained.</div></div>
+      <div class="cs-step"><div class="cs-step-num">4</div><div class="cs-step-text"><strong>Coefficients</strong> — For each variable: estimate (size + direction), "holding other variables constant," test significance.</div></div>
+      <div class="cs-step"><div class="cs-step-num">5</div><div class="cs-step-text"><strong>Multicollinearity?</strong> — Check VIFs. If VIF ≥ 4, mention multicollinearity risk; inference may be unreliable.</div></div>
+      <div class="cs-step"><div class="cs-step-num">6</div><div class="cs-step-text"><strong>Interaction?</strong> — If asked, fit product term. If significant → slopes differ; interpret per group.</div></div>
+      <div class="cs-step"><div class="cs-step-num">7</div><div class="cs-step-text"><strong>Causality?</strong> — Only if visualization/treatment was randomized. Otherwise: association only.</div></div>
+    `
+  },
+  {
+    title: 'SAS Output: What to Look For',
+    full: true,
+    content: `<table class="cs-table">
+      <thead><tr><th>Output element</th><th>Where it appears</th><th>What to read</th></tr></thead>
+      <tbody>
+        <tr><td>F Value / Pr > F</td><td>ANOVA table (proc GLM)</td><td>p-value for overall effect of a factor. Compare to α.</td></tr>
+        <tr><td>Type III SS row</td><td>ANOVA table</td><td>The correct row for each factor's test (controls for other factors).</td></tr>
+        <tr><td>Estimate / Std Error / t / Pr > |t|</td><td>Parameter estimates table</td><td>β estimate, its SE, t-statistic, and p-value for individual predictors.</td></tr>
+        <tr><td>Least Squares Mean (LSMean)</td><td>lsmeans output</td><td>Estimated group means controlling for other factors.</td></tr>
+        <tr><td>Difference in LSMeans / Adj P</td><td>Pairwise comparison table</td><td>Estimated difference between two group means + corrected p-value.</td></tr>
+        <tr><td>R-Square</td><td>Model fit statistics</td><td>Proportion of variance explained by the model.</td></tr>
+        <tr><td>AIC / BIC</td><td>Fit statistics (proc MIXED)</td><td>Lower = better. Compare models with same fixed effects.</td></tr>
+        <tr><td>Interaction row (e.g. A*B)</td><td>ANOVA table</td><td>p-value for interaction. If < α → interaction exists; interpret simple effects.</td></tr>
+      </tbody>
+    </table>`
+  },
+  {
+    title: 'Exact Phrases to Use in Answers',
+    full: true,
+    content: `
+      <div class="cs-phrase"><strong>Stating hypotheses</strong>"H₀: the mean [response] is the same for all levels of [factor], for a given level of [other factor]; H₁: at least two means differ."</div>
+      <div class="cs-phrase"><strong>Testing significance</strong>"The p-value is [X] < α = 5%. We reject H₀. At the 5% significance level, the data establish that [factor] has a statistically significant effect on mean [response], once [other factor] is taken into account."</div>
+      <div class="cs-phrase"><strong>Not significant</strong>"The p-value is [X] > α = 5%. We do not reject H₀. At the 5% significance level, the data do not support the claim that [factor] has a significant effect on mean [response]."</div>
+      <div class="cs-phrase"><strong>Interpreting a regression coefficient (continuous predictor)</strong>"Controlling for [other variables], a 1-unit increase in [X] is associated with an estimated average [increase / decrease] of [|β|] units in [Y]."</div>
+      <div class="cs-phrase"><strong>Interpreting a regression coefficient (indicator variable)</strong>"[Group A] is estimated to have a mean [response] that is [|β|] units [higher / lower] than [Group B], on average, for the same values of [other variables]."</div>
+      <div class="cs-phrase"><strong>Interaction present</strong>"Since the interaction between [A] and [B] is statistically significant, the effect of [A] on mean [response] is not the same at all levels of [B]. We therefore estimate the effect of [A] separately for each level of [B]."</div>
+      <div class="cs-phrase"><strong>Bonferroni correction</strong>"Since [k] pairwise comparisons are relevant, we apply a Bonferroni correction by multiplying each p-value by [k]. Adjusted p-values are compared to the 5% significance level."</div>
+      <div class="cs-phrase"><strong>R²</strong>"The model explains [X]% of the observed variation in [response variable]."</div>
+      <div class="cs-phrase"><strong>Causality (observational)</strong>"Because this is an observational study / because [variable] was not randomly assigned, we cannot conclude that there is a cause-and-effect relationship. We can only conclude that [X] and [Y] are associated."</div>
+      <div class="cs-phrase"><strong>Correlated data justification</strong>"Because two measurements were taken on each participant, observations from the same participant are likely correlated. A model that ignores this correlation would produce incorrect standard errors and p-values."</div>
+    `
+  },
+  {
+    title: 'Critical Traps & Red Flags',
+    content: `
+      <div class="cs-alert"><strong>⚠ Interaction present?</strong> Never interpret main effects globally when interaction is significant. Always say "for a given level of [factor B]."</div>
+      <div class="cs-alert"><strong>⚠ Multiple tests?</strong> Always count k and apply Bonferroni (or note it). Forgetting the correction inflates Type I error.</div>
+      <div class="cs-alert"><strong>⚠ Heteroscedastic?</strong> If variances differ, use Welch (not standard ANOVA). Standard pairwise tests (from proc GLM) assume homoscedasticity.</div>
+      <div class="cs-alert"><strong>⚠ AIC/BIC comparison</strong> Only valid between models with the same fixed effects (same β terms). Do not compare additive vs. interaction models this way.</div>
+      <div class="cs-tip"><strong>✓ Reference category matters</strong> The test for a specific pairwise comparison (e.g., educ 2 vs. 3) is only directly available when one of the two is the reference. Change reference if needed.</div>
+      <div class="cs-tip"><strong>✓ Causality word</strong> Only say "causes" if treatment was randomized. Otherwise use "associated with," "related to," or "is a significant factor in explaining."</div>
+    `
+  },
+  {
+    title: 'Quick Numbers Reference',
+    content: `
+      <div style="font-size:13px; color:var(--text2); margin-bottom:8px; font-family:'Helvetica Neue',Arial,sans-serif;">Bonferroni correction count formula</div>
+      <div class="cs-phrase" style="font-style:normal; font-family:'Courier New',monospace; font-size:13px;">k groups → C(k,2) = k(k−1)/2 pairs<br>4 groups → 6 pairs, 3 groups → 3 pairs</div>
+      <div style="font-size:13px; color:var(--text2); margin-bottom:8px; margin-top:12px; font-family:'Helvetica Neue',Arial,sans-serif;">Interaction: number of simple effect tests</div>
+      <div class="cs-phrase" style="font-style:normal; font-family:'Courier New',monospace; font-size:13px;">k levels A × C(m,2) pairs of B<br>Example: 4 models × 2 impacts = 6+6=12</div>
+      <div style="font-size:13px; color:var(--text2); margin-bottom:8px; margin-top:12px; font-family:'Helvetica Neue',Arial,sans-serif;">VIF threshold</div>
+      <div class="cs-lookup"><div class="cs-lookup-item"><strong>VIF > 4</strong> → multicollinearity concern</div><div class="cs-lookup-item"><strong>VIF > 10</strong> → severe problem</div></div>
+      <div style="font-size:13px; color:var(--text2); margin-bottom:8px; margin-top:12px; font-family:'Helvetica Neue',Arial,sans-serif;">Model selection</div>
+      <div class="cs-lookup"><div class="cs-lookup-item"><strong>Lower AIC/BIC</strong> = better</div><div class="cs-lookup-item"><strong>CS structure</strong> if correlated</div></div>
+    `
+  }
+];
+
+// ============================
+// RENDER FUNCTIONS
+// ============================
+
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function filterCards(topic, btn) {
+  document.querySelectorAll('.fc-filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const cards = document.querySelectorAll('.fc-card');
+  let shown = 0;
+  cards.forEach(c => {
+    if (topic === 'all' || c.dataset.topic === topic) {
+      c.style.display = '';
+      shown++;
+    } else {
+      c.style.display = 'none';
+    }
+  });
+  document.getElementById('fc-progress').textContent = `Showing ${shown} card${shown !== 1 ? 's' : ''}`;
+}
+
+function renderFlashcards() {
+  const grid = document.getElementById('fc-grid');
+  FLASHCARDS.forEach((fc, i) => {
+    const col = TOPICS_COLOR[fc.tagColor] || TOPICS_COLOR.blue;
+    const card = document.createElement('div');
+    card.className = 'fc-card';
+    card.dataset.topic = fc.topic;
+    card.onclick = () => card.classList.toggle('flipped');
+    card.innerHTML = `
+      <div class="fc-inner">
+        <div class="fc-front">
+          <span class="fc-tag" style="background:${col.bg};color:${col.text}">${fc.tag}</span>
+          <div class="fc-front-title">${fc.front}</div>
+          <div class="fc-front-hint">Click to reveal →</div>
+        </div>
+        <div class="fc-back">
+          <div class="fc-back-title">EXPLANATION</div>
+          <div class="fc-back-text">${fc.back}</div>
+          ${fc.formula ? `<div class="fc-formula">${fc.formula}</div>` : ''}
+        </div>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+function toggleTask(el) {
+  el.closest('.sg-task').classList.toggle('open');
+}
+
+function checkAnswer(taskIdx, qIdx) {
+  const ta = document.getElementById(`ta-${taskIdx}-${qIdx}`);
+  const result = document.getElementById(`check-${taskIdx}-${qIdx}`);
+  const val = ta.value.trim().toLowerCase();
+  const keywords = TASKS[taskIdx].questions[qIdx].keywords;
+  const found = keywords.filter(kw => val.includes(kw.toLowerCase()));
+  const missing = keywords.filter(kw => !val.includes(kw.toLowerCase()));
+  const pct = Math.round((found.length / keywords.length) * 100);
+  let color, msg;
+  if (pct >= 80) { color = 'var(--green-bg)'; msg = `✓ Great answer! ${pct}% of key elements included.`; }
+  else if (pct >= 50) { color = 'var(--amber-bg)'; msg = `~ Partial answer (${pct}%). Missing elements: ${missing.join(', ')}`; }
+  else { color = 'var(--red-bg)'; msg = `✗ Key elements missing (${pct}%). Look for: ${missing.join(', ')}`; }
+  result.style.background = color;
+  result.textContent = msg;
+  result.classList.add('show');
+}
+
+function showAnswer(taskIdx, qIdx) {
+  const box = document.getElementById(`answer-${taskIdx}-${qIdx}`);
+  box.classList.toggle('show');
+  const btn = box.previousElementSibling.querySelector('.sg-btn:last-child');
+  btn.textContent = box.classList.contains('show') ? 'Hide Answer' : 'Show Model Answer';
+}
+
+function renderStudyGuide() {
+  const container = document.getElementById('sg-tasks');
+  TASKS.forEach((task, ti) => {
+    const BADGE_COLORS = {
+      blue: { bg: '#e6f1fb', text: '#0c447c' },
+      teal: { bg: '#e1f5ee', text: '#085041' },
+      amber: { bg: '#faeeda', text: '#633806' }
+    };
+    const bc = BADGE_COLORS[task.badgeColor] || BADGE_COLORS.blue;
+
+    let qHTML = '';
+    task.questions.forEach((q, qi) => {
+      qHTML += `
+        <div class="sg-question">${q.q}</div>
+        <textarea class="sg-textarea" id="ta-${ti}-${qi}" placeholder="Write your answer here using proper statistical language..."></textarea>
+        <div class="sg-btn-row">
+          <button class="sg-btn primary" onclick="checkAnswer(${ti},${qi})">Check Key Elements</button>
+          <button class="sg-btn" onclick="showAnswer(${ti},${qi})">Show Model Answer</button>
+        </div>
+        <div class="sg-check-result" id="check-${ti}-${qi}"></div>
+        <div class="sg-answer-box" id="answer-${ti}-${qi}">
+          <div class="sg-answer-header" style="background:var(--green-bg);color:var(--green-text);">Model Answer — Exam-Ready Wording</div>
+          <div class="sg-answer-body">${q.answer}</div>
+        </div>`;
+    });
+
+    let sasHTML = '';
+    if (task.sasImg) {
+      sasHTML = `<div class="sg-sas-output"><div class="sg-sas-label">SAS Output — ${task.sasDesc}</div><img class="sg-sas-img" id="sas-img-${ti}" alt="SAS output" /></div>`;
+    } else if (task.sasDesc) {
+      sasHTML = `<div class="sg-sas-output"><div class="sg-sas-label">SAS Output Reference</div><div style="padding:12px 16px;font-size:13px;color:var(--text2);font-family:'Helvetica Neue',Arial,sans-serif;">${task.sasDesc}</div></div>`;
+    }
+
+    const taskEl = document.createElement('div');
+    taskEl.className = 'sg-task';
+    taskEl.innerHTML = `
+      <div class="sg-task-header" onclick="toggleTask(this)">
+        <div class="sg-task-num" style="background:${bc.bg};color:${bc.text}">${task.num}</div>
+        <div class="sg-task-title">${task.title}</div>
+        <span class="sg-task-badge" style="background:${bc.bg};color:${bc.text}">${task.badge}</span>
+        <span class="sg-task-arrow">▶</span>
+      </div>
+      <div class="sg-task-body">
+        <p style="font-size:13.5px;color:var(--text2);margin-bottom:14px;line-height:1.6;">${task.context}</p>
+        ${sasHTML}
+        ${qHTML}
+      </div>`;
+    container.appendChild(taskEl);
+  });
+}
+
+function renderCheatSheet() {
+  const grid = document.getElementById('cs-grid');
+  CS_SECTIONS.forEach(s => {
+    const card = document.createElement('div');
+    card.className = `cs-card ${s.full ? 'full' : ''}`;
+    card.innerHTML = `<div class="cs-card-title">${s.title}</div>${s.content}`;
+    grid.appendChild(card);
+  });
+}
+
+// ============================
+// LOAD IMAGES (lazy)
+// ============================
+const IMAGE_SRCS = {
+  'anova_pairwise': null,
+  'anova_estimates': null,
+  'anova_twoway_delay': null,
+  'anova_twoway_stage': null,
+  'anova_lsmeans': null,
+  'anova_lsmeans2': null,
+  'anova_interaction': null,
+  'anova_bonferroni': null,
+  'q1': null, 'q2': null, 'q3a': null, 'q3b': null
+};
+
+const TASK_IMG_MAP = {
+  'sas-img-0': 'anova_interaction',
+  'sas-img-1': 'anova_lsmeans',
+  'sas-img-2': 'anova_pairwise',
+};
+
+// Init
+renderFlashcards();
+renderStudyGuide();
+renderCheatSheet();
+</script>
+</body>
+</html>
