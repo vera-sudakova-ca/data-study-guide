@@ -36,7 +36,9 @@ body{font-family:Georgia,'Times New Roman',serif;background:var(--bg);color:var(
 .fc-fbtn{font-family:system-ui,sans-serif;font-size:12px;font-weight:500;padding:5px 13px;border-radius:20px;border:.5px solid var(--border2);background:var(--surface);color:var(--txt2);cursor:pointer;transition:all .15s}
 .fc-fbtn:hover,.fc-fbtn.on{background:var(--blue-bg);color:var(--blue-t);border-color:var(--blue)}
 .fc-count{font-family:system-ui,sans-serif;font-size:12px;color:var(--txt3);margin-bottom:14px}
-.fc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.fc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:1200px){.fc-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:768px){.fc-grid{grid-template-columns:1fr}}
 .fc-card{height:200px;perspective:1000px;cursor:pointer}
 .fc-inner{position:relative;width:100%;height:100%;transition:transform .42s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d}
 .fc-card.flip .fc-inner{transform:rotateY(180deg)}
@@ -87,9 +89,11 @@ body{font-family:Georgia,'Times New Roman',serif;background:var(--bg);color:var(
 .sg-ans-body p:last-child{margin-bottom:0}
 .sg-ans-body strong{font-family:system-ui,sans-serif;font-size:13px;font-weight:700;display:block;margin-bottom:3px;color:var(--txt2)}
 /* ====================================================== CHEAT SHEET */
-.cs-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.cs-grid{display:grid;grid-template-columns:1fr;gap:14px}
+@media(max-width:768px){.cs-grid{grid-template-columns:1fr}}
 .cs-card{background:var(--surface);border:.5px solid var(--border);border-radius:var(--rlg);padding:17px 19px}
 .cs-card.full{grid-column:1/-1}
+.cs-card:first-child{grid-column:1/-1}
 .cs-ctitle{font-family:system-ui,sans-serif;font-size:11px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;color:var(--txt2);margin-bottom:13px;padding-bottom:8px;border-bottom:.5px solid var(--border)}
 .cs-step{display:flex;gap:9px;margin-bottom:10px;align-items:flex-start}
 .cs-snum{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:system-ui,sans-serif;font-size:10px;font-weight:700;flex-shrink:0;background:var(--blue-bg);color:var(--blue-t)}
@@ -275,8 +279,9 @@ const CARDS = [
     back:`<p>When you run many tests at once, the chance of getting at least one false positive by accident goes up. Bonferroni is a simple fix.</p>
 <p><b>How it works:</b> multiply each raw p-value by the number of tests you're running (k). Then compare the adjusted p-value to α = 0.05.</p>
 <p>Example: 6 pairwise tests, raw p-value = 0.012 → adjusted = 0.012 × 6 = 0.072 → NOT significant at 5% after correction.</p>
+<p><b>How to count k (number of tests):</b> For a factor with k levels, the number of pairwise comparisons is C(k,2) = k(k−1)/2. For k=4 groups: 4×3/2 = 6 pairs.</p>
 <p>Important: count only the tests that are <em>relevant to your question</em>, not all tests SAS produces.</p>`,
-    eg:`4 groups → C(4,2) = 6 pairs → multiply each p-value by 6.<br>3 groups → C(3,2) = 3 pairs → multiply each p-value by 3.` },
+    eg:`4 groups → C(4,2) = 6 pairwise comparisons → multiply each p-value by 6.<br>3 groups → C(3,2) = 3 pairwise comparisons → multiply each p-value by 3.` },
 
   // ─── REGRESSION ───────────────────────────────────────────────────
   { topic:'regression', tag:'Regression', c:'teal',
@@ -479,26 +484,34 @@ const CHEAT_SHEET = [
   {
     title:'Bonferroni quick reference',
     html:`<table class="cs-table">
-<thead><tr><th>Number of groups (k)</th><th>Pairwise tests = C(k,2)</th><th>Multiply each p by</th></tr></thead>
+<thead><tr><th>Number of groups (k)</th><th>Number of pairwise tests</th><th>Multiply each p by</th></tr></thead>
 <tbody>
-<tr><td>2 groups</td><td>1 pair</td><td>×1 (no correction needed)</td></tr>
+<tr><td>2 groups</td><td>1 pair</td><td>×1 (no correction)</td></tr>
 <tr><td>3 groups</td><td>3 pairs</td><td>×3</td></tr>
 <tr><td>4 groups</td><td>6 pairs</td><td>×6</td></tr>
 <tr><td>5 groups</td><td>10 pairs</td><td>×10</td></tr>
 </tbody></table>
 <div style="margin-top:12px;padding:10px;background:var(--s2);border-radius:7px;font-size:12.5px;line-height:1.65;color:var(--txt2);font-family:system-ui,sans-serif">
-<b style="color:var(--txt)">With interaction (2 factors):</b><br>
-Simple effects of Factor A at each level of B:<br>
-The total number of relevant tests when interaction is significant:<br>
-Count C(k,2) pairs for EACH level of the other factor, then add them up.<br><br>
-Example: 3 levels of Factor A, 2 levels of Factor B:<br>
-— Pairs at Factor B level 1: C(3,2) = 3<br>
-— Pairs at Factor B level 2: C(3,2) = 3<br>
-— Total k = 3 + 3 = <b style="color:var(--txt)">6 tests → multiply each p-value by 6</b><br><br>
-Example: 4 levels of Factor A, 2 levels of Factor B:<br>
-— Pairs at Factor B level 1: C(4,2) = 6<br>
-— Pairs at Factor B level 2: C(4,2) = 6<br>
-— Total k = 6 + 6 = <b style="color:var(--txt)">12 tests → multiply each p-value by 12</b>
+<b style="color:var(--txt)">Understanding the formula — C(k,2):</b><br>
+C(k,2) means "combinations of k things taken 2 at a time" = the number of unique pairs you can make from k groups.<br>
+Formula: C(k,2) = k × (k−1) ÷ 2<br>
+• C(3,2) = 3 × 2 ÷ 2 = <b style="color:var(--txt)">3 pairs</b><br>
+• C(4,2) = 4 × 3 ÷ 2 = <b style="color:var(--txt)">6 pairs</b><br>
+• C(5,2) = 5 × 4 ÷ 2 = <b style="color:var(--txt)">10 pairs</b><br><br>
+
+<b style="color:var(--txt)">With interaction (2 factors) — Simple effects:</b><br>
+When interaction is significant, you test the effect of Factor A <b>separately at each level of Factor B.</b><br><br>
+<b style="color:var(--txt)">Example: 3 levels of Factor A, 2 levels of Factor B</b><br>
+• At Factor B level 1: compare all 3 levels of A pairwise → C(3,2) = 3 pairs<br>
+• At Factor B level 2: compare all 3 levels of A pairwise → C(3,2) = 3 pairs<br>
+• <b style="color:var(--txt)">Total = 3 + 3 = 6 relevant tests → multiply each p-value by 6</b><br><br>
+
+<b style="color:var(--txt)">Example: 4 levels of Factor A, 2 levels of Factor B</b><br>
+• At Factor B level 1: C(4,2) = 6 pairs<br>
+• At Factor B level 2: C(4,2) = 6 pairs<br>
+• <b style="color:var(--txt)">Total = 6 + 6 = 12 relevant tests → multiply each p-value by 12</b><br><br>
+
+<span style="color:var(--txt)"><b>Key point:</b> When testing simple effects with interaction, count pairs <em>within each subgroup</em> separately, then sum them for the total Bonferroni correction.</span>
 </div>`
   },
   {
