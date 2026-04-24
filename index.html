@@ -334,7 +334,7 @@ const CARDS = [
   { topic:'regression', tag:'Regression', c:'teal',
     front:'Multiple regression with 2 predictors — equation and what each coefficient means',
     back:`<p>When there are <b>two explanatory variables</b> in the model, each coefficient is a <em>partial</em> effect — it captures the relationship with ŷ while the other variable is held constant.</p>
-<p>⚠️ Never interpret b₁ without saying "holding x₂ constant." The phrase is mandatory in this course.</p>
+<p>⚠️ When you talk about interpreting b₁ mention it's the case "holding x₂ constant."</p>
 <p>Example: if x₁ is a treatment type and x₂ is participant age, b₁ estimates the treatment effect among people of the same age.</p>`,
     formula:{
       eq:`ŷ = b<sub>0</sub> + b<sub>1</sub>x<sub>1</sub> + b<sub>2</sub>x<sub>2</sub>`,
@@ -609,7 +609,7 @@ run;</code></p>
 <strong>2. Independence:</strong> Observations are not correlated with each other. Violated → use proc MIXED instead of proc GLM.<br>
 <strong>3. Normality:</strong> Errors follow a normal distribution. Violated → tests may be unreliable, especially in small samples.<br>
 <strong>4. Homoscedasticity:</strong> The variance of errors is constant across all X values. Violated → standard errors are wrong.</p>
-<p>Check these conditions with <strong>residual plots</strong>. In this course, you should be able to name all four and identify which condition is violated from context or a graph.</p>`,
+<p>Check these conditions with <strong>residual plots</strong>.</p>`,
     eg:`Data with repeated measures per person → independence violated → move to proc MIXED. Non-linear scatterplot → linearity violated → try a quadratic or inverse transformation.` },
 
   { topic:'regression', tag:'Regression', c:'teal',
@@ -1077,7 +1077,7 @@ When interaction is significant, you test the effect of Factor A <b>separately a
   {
     title:'Key numbers to remember',
     html:`<div style="font-size:13px;line-height:1.8;color:var(--txt)">
-<div style="margin-bottom:10px;padding:8px 12px;background:var(--s2);border-radius:7px"><b style="font-family:system-ui,sans-serif;font-size:11px;color:var(--txt2);display:block;margin-bottom:2px">Significance level</b>α = 5% = 0.05 (default for all tests in this course)</div>
+<div style="margin-bottom:10px;padding:8px 12px;background:var(--s2);border-radius:7px"><b style="font-family:system-ui,sans-serif;font-size:11px;color:var(--txt2);display:block;margin-bottom:2px">Significance level</b>α = 5% = 0.05 (standard default level)</div>
 <div style="margin-bottom:10px;padding:8px 12px;background:var(--s2);border-radius:7px"><b style="font-family:system-ui,sans-serif;font-size:11px;color:var(--txt2);display:block;margin-bottom:2px">VIF thresholds (multicollinearity)</b>VIF ≥ 4 → possible concern. VIF ≥ 10 → serious problem. Also: r ≥ 0.7–0.8 between two predictors → red flag.</div>
 <div style="margin-bottom:10px;padding:8px 12px;background:var(--s2);border-radius:7px"><b style="font-family:system-ui,sans-serif;font-size:11px;color:var(--txt2);display:block;margin-bottom:2px">AIC/BIC</b>Lower = better. Comparing two models: both AIC AND BIC should agree on the preferred model for a clear conclusion. Can only compare models with the same fixed effects.</div>
 <div style="padding:8px 12px;background:var(--s2);border-radius:7px"><b style="font-family:system-ui,sans-serif;font-size:11px;color:var(--txt2);display:block;margin-bottom:2px">CS correlation estimate ρ</b>If ρ > 0 → observations within a group are positively correlated → modeling correlation is appropriate.</div>
@@ -1106,8 +1106,7 @@ When interaction is significant, you test the effect of Factor A <b>separately a
 <tr><td><b>2. Independence</b></td><td>Observations are not correlated with each other</td><td>Standard errors are wrong → use proc MIXED with a correlation structure</td></tr>
 <tr><td><b>3. Normality</b></td><td>Errors are normally distributed</td><td>Tests may be unreliable, especially in small samples</td></tr>
 <tr><td><b>4. Homoscedasticity</b></td><td>Variance of errors is constant across all X</td><td>Standard errors are wrong → Welch's test or heteroscedastic ANOVA</td></tr>
-</tbody></table>
-<div class="cs-tip" style="margin-top:12px"><b>✓ In this course:</b> You need to name all four conditions and recognize which one is violated given a description or graph. Full residual analysis is not expected, but knowing the consequences is.</div>`
+</tbody></table>`
   },
   {
     title:'Exact sentences — correlated data & logistic regression',
