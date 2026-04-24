@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>60605A — Final Exam Study Guide</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f5f4f0;--surface:#fff;--s2:#f1efe8;--s3:#e8e6de;
+  --border:rgba(0,0,0,.10);--border2:rgba(0,0,0,.20);
+  --txt:#1c1b18;--txt2:#5f5d58;--txt3:#9b9890;
+  --blue:#185fa5;--blue-bg:#e6f1fb;--blue-t:#0c447c;
+  --grn:#3b6d11;--grn-bg:#eaf3de;--grn-t:#27500a;
+  --amb:#854f0b;--amb-bg:#faeeda;--amb-t:#633806;
+  --red:#a32d2d;--red-bg:#fcebeb;--red-t:#791f1f;
+  --pur:#534ab7;--pur-bg:#eeedfe;--pur-t:#3c3489;
+  --teal:#0f6e56;--teal-bg:#e1f5ee;--teal-t:#085041;
+  --coral:#993c1d;--coral-bg:#faece7;--coral-t:#4a1b0c;
+  --r:10px;--rlg:14px
+}
+body{font-family:Georgia,'Times New Roman',serif;background:var(--bg);color:var(--txt);font-size:15px;line-height:1.75}
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;height:52px;background:var(--surface);border-bottom:1px solid var(--border2);z-index:200;display:flex;align-items:center;padding:0 20px;gap:4px}
+.nav-brand{font-family:system-ui,sans-serif;font-weight:700;font-size:14px;letter-spacing:-.3px;margin-right:16px;white-space:nowrap;color:var(--txt)}
+.nav-tab{font-family:system-ui,sans-serif;font-size:13px;font-weight:500;padding:6px 14px;border-radius:20px;border:none;background:none;color:var(--txt2);cursor:pointer;transition:all .15s;white-space:nowrap}
+.nav-tab:hover{background:var(--s2);color:var(--txt)}
+.nav-tab.on{background:var(--blue-bg);color:var(--blue-t);font-weight:600}
+/* PAGES */
+.pg{display:none;padding:68px 22px 60px;max-width:980px;margin:0 auto}
+.pg.on{display:block}
+.ph{font-family:system-ui,sans-serif;font-size:22px;font-weight:700;letter-spacing:-.4px;margin-bottom:4px}
+.ps{font-size:14px;color:var(--txt2);margin-bottom:24px;line-height:1.6}
+/* ======================================================== FLASHCARDS */
+.fc-filters{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px}
+.fc-fbtn{font-family:system-ui,sans-serif;font-size:12px;font-weight:500;padding:5px 13px;border-radius:20px;border:.5px solid var(--border2);background:var(--surface);color:var(--txt2);cursor:pointer;transition:all .15s}
+.fc-fbtn:hover,.fc-fbtn.on{background:var(--blue-bg);color:var(--blue-t);border-color:var(--blue)}
+.fc-count{font-family:system-ui,sans-serif;font-size:12px;color:var(--txt3);margin-bottom:14px}
+.fc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:1200px){.fc-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:768px){.fc-grid{grid-template-columns:1fr}}
+.fc-card{height:200px;perspective:1000px;cursor:pointer;position:relative}
+.fc-card .fc-checkbox{position:absolute;top:8px;right:8px;z-index:20;cursor:pointer;appearance:none;width:22px;height:22px;border:2px solid var(--border2);border-radius:4px;background:white;transition:all .15s}
+.fc-card .fc-checkbox:hover{border-color:var(--blue);box-shadow:0 0 0 2px rgba(24,95,165,.15)}
+.fc-card .fc-checkbox:checked{background:var(--blue);border-color:var(--blue)}
+.fc-card .fc-checkbox:checked::after{content:'✓';position:absolute;top:-3px;left:4px;color:white;font-weight:bold;font-size:15px}
+.fc-inner{position:relative;width:100%;height:100%;transition:transform .42s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d}
+.fc-card.flip .fc-inner{transform:rotateY(180deg)}
+.fc-f,.fc-b{position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--rlg);padding:18px;display:flex;flex-direction:column}
+.fc-f{background:var(--surface);border:.5px solid var(--border2);justify-content:space-between}
+.fc-b{background:var(--surface);border:.5px solid var(--border2);transform:rotateY(180deg);overflow-y:auto;justify-content:flex-start}
+.fc-tag{display:inline-block;font-family:system-ui,sans-serif;font-size:10px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;padding:3px 9px;border-radius:20px;align-self:flex-start;margin-bottom:10px}
+.fc-title{font-family:system-ui,sans-serif;font-size:15px;font-weight:600;line-height:1.35;color:var(--txt)}
+.fc-hint{font-family:system-ui,sans-serif;font-size:11px;color:var(--txt3);margin-top:6px}
+.fc-blabel{font-family:system-ui,sans-serif;font-size:10px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--txt3);margin-bottom:8px}
+.fc-btext{font-size:13px;line-height:1.65;color:var(--txt)}
+.fc-btext p{margin-bottom:7px}
+.fc-btext p:last-child{margin-bottom:0}
+.fc-eg{margin-top:8px;font-size:12.5px;background:var(--s2);border-radius:6px;padding:8px 10px;line-height:1.55;font-family:system-ui,sans-serif;color:var(--txt2);border-left:3px solid var(--blue);font-style:italic}
+.fc-eg b{color:var(--blue-t);font-weight:700;font-style:normal}
+.fc-formula{background:var(--blue-bg);border:1px solid rgba(24,95,165,.18);border-radius:10px;margin-top:10px;overflow:hidden}
+.fc-formula-eq{font-family:Georgia,'Times New Roman',serif;font-size:17px;text-align:center;padding:12px 14px 10px;color:var(--blue-t);letter-spacing:.03em;line-height:1.5;font-weight:600}
+.fc-formula-eq sub{font-size:11px;vertical-align:sub}
+.fc-formula-eq sup{font-size:11px;vertical-align:super}
+.fc-formula-terms{padding:4px 12px 10px;border-top:1px solid rgba(24,95,165,.1)}
+.fc-formula-term{font-size:11.5px;line-height:1.6;color:var(--txt2);font-family:system-ui,sans-serif;display:flex;gap:6px;margin-top:3px}
+.fc-formula-term b{font-family:Georgia,serif;font-size:12px;color:var(--blue-t);min-width:50px;flex-shrink:0}
+/* ====================================================== STUDY GUIDE */
+.sg-task{background:var(--surface);border:.5px solid var(--border);border-radius:var(--rlg);margin-bottom:16px;overflow:hidden;transition:box-shadow .15s}
+.sg-task:hover{box-shadow:0 2px 12px rgba(0,0,0,.07)}
+.sg-hdr{display:flex;align-items:center;gap:10px;padding:15px 18px;cursor:pointer;user-select:none}
+.sg-num{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:system-ui,sans-serif;font-size:11px;font-weight:700;flex-shrink:0}
+.sg-ttl{font-family:system-ui,sans-serif;font-size:14px;font-weight:600;flex:1;line-height:1.35}
+.sg-badge{font-family:system-ui,sans-serif;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:3px 10px;border-radius:20px;flex-shrink:0}
+.sg-arr{font-size:12px;color:var(--txt3);transition:transform .2s;flex-shrink:0}
+.sg-task.open .sg-arr{transform:rotate(90deg)}
+.sg-body{display:none;padding:4px 18px 20px}
+.sg-task.open .sg-body{display:block}
+.sg-ctx{font-size:13.5px;color:var(--txt2);margin-bottom:14px;line-height:1.7;padding:12px 16px;background:var(--s2);border-radius:8px;border-left:3px solid var(--blue-t)}
+.sas-wrap{border:.5px solid var(--border2);border-radius:var(--r);overflow:hidden;margin:14px 0}
+.sas-lbl{font-family:system-ui,sans-serif;font-size:10px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;background:var(--s2);padding:6px 12px;color:var(--txt2);border-bottom:.5px solid var(--border)}
+.sas-img{width:100%;display:block}
+.sas-note{padding:10px 14px;font-size:12.5px;color:var(--txt2);font-family:system-ui,sans-serif;line-height:1.55}
+.sg-q{background:var(--blue-bg);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;padding:11px 14px;margin:14px 0 8px;font-size:14px;color:var(--blue-t);line-height:1.65}
+.sg-ta{width:100%;border:.5px solid var(--border2);border-radius:8px;padding:11px;font-family:Georgia,serif;font-size:13.5px;line-height:1.65;min-height:90px;resize:vertical;background:var(--surface);color:var(--txt);margin:4px 0 8px}
+.sg-ta:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 2px rgba(24,95,165,.12)}
+.sg-btns{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.sg-btn{font-family:system-ui,sans-serif;font-size:12px;font-weight:500;padding:7px 16px;border-radius:8px;cursor:pointer;border:.5px solid var(--border2);background:var(--surface);color:var(--txt);transition:all .15s}
+.sg-btn:hover{background:var(--s2)}
+.sg-btn.pri{background:var(--blue);color:#fff;border-color:var(--blue)}
+.sg-btn.pri:hover{opacity:.9}
+.sg-chk{display:none;padding:9px 13px;border-radius:8px;margin-bottom:8px;font-family:system-ui,sans-serif;font-size:13px;line-height:1.5}
+.sg-chk.on{display:block}
+.sg-ans{display:none;border-radius:8px;overflow:hidden;margin-top:6px}
+.sg-ans.on{display:block}
+.sg-ans-hdr{font-family:system-ui,sans-serif;font-size:10px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;padding:7px 14px;background:var(--grn-bg);color:var(--grn-t)}
+.sg-ans-body{padding:14px 16px;font-size:13.5px;line-height:1.8;background:var(--surface);border:.5px solid var(--border)}
+.sg-ans-body p{margin-bottom:10px}
+.sg-ans-body p:last-child{margin-bottom:0}
+.sg-ans-body strong{font-family:system-ui,sans-serif;font-size:13px;font-weight:700;display:block;margin-bottom:3px;color:var(--txt2)}
+/* ====================================================== CHEAT SHEET */
+.cs-grid{display:grid;grid-template-columns:1fr;gap:14px}
+@media(max-width:768px){.cs-grid{grid-template-columns:1fr}}
+.cs-card{background:var(--surface);border:.5px solid var(--border);border-radius:var(--rlg);padding:17px 19px}
+.cs-card.full{grid-column:1/-1}
+.cs-card:first-child{grid-column:1/-1}
+.cs-ctitle{font-family:system-ui,sans-serif;font-size:11px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;color:var(--txt2);margin-bottom:13px;padding-bottom:8px;border-bottom:.5px solid var(--border)}
+.cs-step{display:flex;gap:9px;margin-bottom:10px;align-items:flex-start}
+.cs-snum{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:system-ui,sans-serif;font-size:10px;font-weight:700;flex-shrink:0;background:var(--blue-bg);color:var(--blue-t)}
+.cs-stxt{font-size:13px;line-height:1.55;color:var(--txt)}
+.cs-stxt b{font-family:system-ui,sans-serif;font-size:12px;font-weight:700;color:var(--txt)}
+.cs-phrase{background:var(--s2);border-radius:7px;padding:9px 13px;margin-bottom:8px;font-size:13px;line-height:1.6;color:var(--txt);border-left:3px solid var(--blue)}
+.cs-phrase .plab{display:block;font-family:system-ui,sans-serif;font-size:10px;font-weight:700;color:var(--blue-t);letter-spacing:.5px;text-transform:uppercase;margin-bottom:4px}
+.cs-phrase em{font-style:italic;color:var(--txt2)}
+.cs-alert{background:var(--red-bg);border:.5px solid rgba(163,45,45,.3);border-radius:7px;padding:9px 13px;margin-bottom:8px;font-size:13px;color:var(--red-t);line-height:1.55}
+.cs-alert b{font-family:system-ui,sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.cs-tip{background:var(--grn-bg);border:.5px solid rgba(59,109,17,.3);border-radius:7px;padding:9px 13px;margin-bottom:8px;font-size:13px;color:var(--grn-t);line-height:1.55}
+.cs-tip b{font-family:system-ui,sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.cs-table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:4px}
+.cs-table th{font-family:system-ui,sans-serif;font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--txt2);padding:6px 10px;border-bottom:.5px solid var(--border2);text-align:left}
+.cs-table td{padding:7px 10px;border-bottom:.5px solid var(--border);color:var(--txt);vertical-align:top;line-height:1.5}
+.cs-table tr:last-child td{border-bottom:none}
+.cs-table tr:hover td{background:var(--s2)}
+code{font-family:'Courier New',monospace;font-size:11.5px;background:var(--s2);padding:1px 5px;border-radius:4px;color:var(--pur-t)}
+@media(max-width:660px){.cs-grid{grid-template-columns:1fr}.cs-card.full{grid-column:1}.fc-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-brand">60605A</div>
+  <button class="nav-tab on" onclick="go('fc',this)">🃏 Flashcards</button>
+  <button class="nav-tab" onclick="go('sg',this)">📝 Practice Test</button>
+  <button class="nav-tab" onclick="go('cs',this)">📄 Cheat Sheet</button>
+</nav>
+
+<!-- FLASHCARDS PAGE -->
+<div id="fc" class="pg on">
+  <div class="ph">Key Concepts — Flashcards</div>
+  <div class="ps">Click any card to flip it and see a plain-English explanation. Filter by topic to focus your studying.</div>
+  <div class="fc-filters">
+    <button class="fc-fbtn on" onclick="filterFC('all',this)">All</button>
+    <button class="fc-fbtn" onclick="filterFC('basics',this)">📌 Basics First</button>
+    <button class="fc-fbtn" onclick="filterFC('anova',this)">ANOVA</button>
+    <button class="fc-fbtn" onclick="filterFC('regression',this)">Regression</button>
+    <button class="fc-fbtn" onclick="filterFC('correlated',this)">Correlated Data</button>
+    <button class="fc-fbtn" onclick="filterFC('logistic',this)">Logistic Regression</button>
+  </div>
+  <div style="display:flex;gap:10px;margin-bottom:16px;align-items:center;flex-wrap:wrap">
+    <button class="fc-fbtn on" onclick="filterStatus('all',this)">📚 All Cards</button>
+    <button class="fc-fbtn" onclick="filterStatus('reviewed',this)">✅ Reviewed</button>
+    <button class="fc-fbtn" onclick="filterStatus('unreviewed',this)">⭕ To Review</button>
+    <span style="font-size:12px;color:var(--txt3);margin-left:auto">☑️ Check the box in top-right corner to mark cards</span>
+  </div>
+  <div class="fc-count" id="fc-count"></div>
+  <div class="fc-grid" id="fc-grid"></div>
+</div>
+
+<!-- STUDY GUIDE PAGE -->
+<div id="sg" class="pg">
+  <div class="ph">Practice Test — Exam-Style Questions</div>
+  <div class="ps">Each task tells you exactly which dataset to open in SAS OnDemand and what output to produce. Write your answer in the box, check how many key concepts you hit, then reveal the model answer — written in generic template language you can apply to any exam case study, with the quiz numbers filled in as a worked example.</div>
+  <div id="sg-container"></div>
+</div>
+
+<!-- CHEAT SHEET PAGE -->
+<div id="cs" class="pg">
+  <div class="ph">Exam Cheat Sheet</div>
+  <div class="ps">Step-by-step decision processes, exact sentences to copy into your exam answers, and a guide to reading SAS output quickly.</div>
+  <div class="cs-grid" id="cs-grid"></div>
+</div>
+
+<script>
+function go(id, btn) {
+  document.querySelectorAll('.pg').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('on');
+  window.scrollTo(0,0);
+}
+
+// =====================================================================
+// FLASHCARD DATA  — beginner-first, plain English
+// =====================================================================
+const CARDS = [
+
+  // ─── BASICS FIRST ────────────────────────────────────────────────
+  { topic:'basics', tag:'Basics First', c:'purple',
+    front:'What is a hypothesis test?',
+    back:`<p>A way to use data to decide between two competing statements about the world.</p>
+<p><b>H₀ (null hypothesis)</b> — the "nothing is happening" claim. Example: "The average response is the same across all groups."</p>
+<p><b>H₁ (alternative hypothesis)</b> — the "something is happening" claim. Example: "At least two groups have different average responses."</p>
+<p>You run a test on your data, get a p-value, and use it to decide whether to reject H₀.</p>`,
+    eg:`Think of it like a court trial: H₀ = "innocent until proven guilty." You need strong evidence (small p-value) to reject it.` },
+
+  { topic:'basics', tag:'Basics First', c:'purple',
+    front:'What is a p-value?',
+    back:`<p>The p-value answers this question: <b>"If H₀ were actually true, how likely would it be to see results this extreme (or more) just by chance?"</b></p>
+<p>A <b>small p-value</b> (e.g. 0.002) means: it would be very unlikely to see these results if H₀ were true — so we reject H₀.</p>
+<p>A <b>large p-value</b> (e.g. 0.34) means: these results are not surprising even if H₀ is true — so we don't reject H₀.</p>
+<p>⚠️ The p-value is NOT the probability that H₀ is true.</p>`,
+    eg:`p = 0.0003 → very small → strong evidence against H₀.<br>p = 0.42 → large → no evidence against H₀.` },
+
+  { topic:'basics', tag:'Basics First', c:'purple',
+    front:'What does "statistically significant" mean?',
+    back:`<p>A result is <b>statistically significant</b> at the α = 5% significance level if its p-value is less than 0.05.</p>
+<p>This means the data provide strong evidence that the effect or difference is real (not just due to chance), assuming H₀ is true.</p>
+<p>⚠️ Important: statistical significance ≠ practical significance. A tiny effect can be statistically significant with a large sample. A large effect can be non-significant with a small sample.</p>`,
+    eg:`"At the 5% significance level, the data establish that the factor has a statistically significant effect on the response."` },
+
+  { topic:'basics', tag:'Basics First', c:'purple',
+    front:'What is the F-test?',
+    back:`<p>The F-test is the main test used in ANOVA. It answers: <b>"Is there any difference in average response across the groups?"</b></p>
+<p>It computes an F-statistic = how much variation is <em>between</em> groups ÷ how much variation is <em>within</em> groups.</p>
+<p>A <b>large F</b> → big between-group differences relative to within-group noise → small p-value → likely significant.</p>
+<p>In SAS output: look at the row for your variable in the "Type III SS" table. The column "Pr > F" is the p-value.</p>`,
+    eg:`F = 12.4, Pr > F = 0.0003 → p-value is 0.0003 < 0.05 → reject H₀ → the factor is significant.` },
+
+  { topic:'basics', tag:'Basics First', c:'purple',
+    front:'What is R²?',
+    back:`<p>R² (R-squared) tells you: <b>what proportion of the variation in your response variable is explained by your model</b>.</p>
+<p>• R² = 0.15 → the model explains 15% of the variation in the response.<br>
+• R² = 0.80 → the model explains 80% of the variation.</p>
+<p>The exam sentence is always: <b>"The model explains [R²]% of the observed variation in [response]."</b></p>
+<p>R² can be low but variables can still be individually significant — they're different things.</p>`,
+    eg:`R² = 0.143 → "The model explains 14.3% of the observed variation in the response variable."` },
+
+  { topic:'basics', tag:'Basics First', c:'purple',
+    front:'What is a confidence interval?',
+    back:`<p>A confidence interval gives a <b>range of plausible values</b> for a parameter (like a mean or a difference between means).</p>
+<p>A 95% CI means: if we repeated the study many times, 95% of the intervals we'd compute would contain the true parameter value.</p>
+<p>Shortcut: if a 95% CI for a difference does NOT include 0 → the difference is significant at α = 5%.</p>`,
+    eg:`95% CI for a treatment effect: [2.1, 8.4] → doesn't include 0 → significant effect.` },
+
+  { topic:'basics', tag:'Basics First', c:'purple',
+    front:'Causation vs. Association — what\'s the difference?',
+    back:`<p><b>Association</b> means two variables tend to move together. It doesn't tell you why.</p>
+<p><b>Causation</b> means one variable actually causes the other to change.</p>
+<p>You can only conclude <b>causation</b> if the variable was <b>randomly assigned</b> to participants (a true experiment).</p>
+<p>If a variable was not randomly assigned (observational), you can only say it is "associated with" the response, not that it "causes" a change.</p>`,
+    eg:`❌ "Experience causes people to be faster" (if not randomized)<br>✓ "Experience is negatively associated with response time"` },
+
+  { topic:'basics', tag:'Basics First', c:'purple',
+    front:'What is a "least squares mean" (LSMean) in SAS?',
+    back:`<p>In SAS, after running proc GLM, you often ask for "lsmeans." These are <b>estimated group averages that account for the other variables in the model</b>.</p>
+<p>They are called "least squares means" because they are calculated by the regression/ANOVA model, not just simple averages from the raw data.</p>
+<p>When you report group means from a two-way ANOVA or regression, you should use LSMeans — not the raw averages — because LSMeans control for the other factors.</p>`,
+    eg:`If you're looking at the effect of one factor while controlling for another, the LSMean for each group is its estimated average response at the average level of the other factor.` },
+
+  // ─── ANOVA ────────────────────────────────────────────────────────
+  { topic:'anova', tag:'ANOVA', c:'blue',
+    front:'What is ANOVA and when do you use it?',
+    back:`<p>ANOVA = <b>Analysis of Variance</b>. Use it when you want to compare the average response across 2 or more groups defined by a categorical factor.</p>
+<p>Example: does a treatment (applied vs. control) affect the average response?</p>
+<p><b>One-way ANOVA</b>: one grouping factor.<br>
+<b>Two-way ANOVA</b>: two grouping factors at once (e.g., treatment type AND patient age group).</p>
+<p>The key test: F-test for whether all group means are equal.</p>`,
+    eg:`3 treatment types → "Does treatment type affect mean response?" → one-way ANOVA (or two-way if you also include another factor).` },
+
+  { topic:'anova', tag:'ANOVA', c:'blue',
+    front:'Homoscedastic vs. Heteroscedastic — what\'s the difference?',
+    back:`<p><b>Homoscedastic</b> = the groups have roughly <b>equal variances</b>. This is assumed by default in proc GLM — standard F-tests and pairwise comparisons are valid.</p>
+<p><b>Heteroscedastic</b> = the groups have <b>different variances</b>.</p>
+<p>Why does it matter? Standard ANOVA tests assume equal variances. When you are told the data are heteroscedastic, use <b>Welch's test</b> instead — it does not require equal variances.</p>
+<p>⚠️ The exam will tell you which case you are in. Your job is to know what to do with that information.</p>`,
+    eg:`"The variances are unequal across groups" → use Welch's test (proc TTEST for pairwise) + Bonferroni correction. Do NOT use the standard F-test or proc GLM pairwise tests.` },
+
+  { topic:'anova', tag:'ANOVA', c:'blue',
+    front:'What is an interaction between two factors?',
+    back:`<p>An interaction means: <b>the effect of one factor changes depending on the level of the other factor.</b></p>
+<p>Think of it like this: if treatment A is better than B only when age is young (but not when it's old), that's an interaction — the two factors are working together in a non-additive way.</p>
+<p><b>No interaction (additive)</b>: the gap between A and B is the same regardless of age. Lines in the interaction plot are parallel.</p>
+<p><b>Interaction present</b>: the gap changes. Lines in the plot are NOT parallel (they cross or fan out).</p>`,
+    eg:`Parallel lines in the means plot → additive model is OK.<br>Non-parallel / crossing lines → interaction is likely → test it!` },
+
+  { topic:'anova', tag:'ANOVA', c:'blue',
+    front:'How do you decide: additive model or interaction model?',
+    back:`<p><b>Step 1:</b> Look at the interaction plot from your SAS output. Are the lines roughly parallel?</p>
+<p><b>Step 2:</b> Run the F-test for the interaction term (A*B row in the ANOVA table).<br>
+• If p-value < 0.05 → interaction is significant → use the interaction model → report simple effects (factor A at each level of B).<br>
+• If p-value ≥ 0.05 → no significant interaction → drop the term → use additive model → report main effects globally.</p>
+<p>⚠️ Always test interaction FIRST. If interaction is significant, you cannot interpret main effects as if they apply to all groups.</p>`,
+    eg:`Interaction p = 0.003 → significant → "The effect of factor A on mean response differs by level of factor B."` },
+
+  { topic:'anova', tag:'ANOVA', c:'blue',
+    front:'What are "simple effects" and when do you need them?',
+    back:`<p>Simple effects = <b>the effect of one factor studied separately at each level of the other factor</b>. You need them when the interaction is significant.</p>
+<p>Example: if factor A × factor B is significant:</p>
+<p>• Effect of factor A when factor B = level 1 (separate analysis)<br>
+• Effect of factor A when factor B = level 2 (separate analysis)</p>
+<p>For each level of factor B, you compare the levels of factor A pairwise and apply a Bonferroni correction.</p>`,
+    eg:`3 treatment types, 2 age groups → 3 pairs at age level 1 + 3 pairs at age level 2 = 6 tests total → multiply each p-value by 6.` },
+
+  { topic:'anova', tag:'ANOVA', c:'blue',
+    front:'What is the Bonferroni correction and why use it?',
+    back:`<p>When you run many tests at once, the chance of getting at least one false positive by accident goes up. Bonferroni is a simple fix.</p>
+<p><b>How it works:</b> multiply each raw p-value by the number of tests you're running (k). Then compare the adjusted p-value to α = 0.05.</p>
+<p>Example: 6 pairwise tests, raw p-value = 0.012 → adjusted = 0.012 × 6 = 0.072 → NOT significant at 5% after correction.</p>
+<p><b>How to count k (number of tests):</b> For a factor with k levels, the number of pairwise comparisons is C(k,2) = k(k−1)/2. For k=4 groups: 4×3/2 = 6 pairs.</p>
+<p>Important: count only the tests that are <em>relevant to your question</em>, not all tests SAS produces.</p>`,
+    eg:`4 groups → C(4,2) = 6 pairwise comparisons → multiply each p-value by 6.<br>3 groups → C(3,2) = 3 pairwise comparisons → multiply each p-value by 3.` },
+
+  // ─── REGRESSION — EQUATIONS ───────────────────────────────────────
+  { topic:'regression', tag:'Regression', c:'teal',
+    front:'What is the general equation of a linear regression model?',
+    back:`<p>A linear regression model expresses the <b>average (estimated) value of the response</b> as a sum of the intercept and the effect of each explanatory variable.</p>
+<p>There are <b>n</b> explanatory variables. Each coefficient bᵢ tells you how much ŷ changes for a 1-unit increase in xᵢ, with all other variables held constant.</p>
+<p>In the course, β̂₀ and β̂ᵢ denote <em>estimated</em> coefficients (from data); β₀ and βᵢ denote the true population values.</p>`,
+    formula:{
+      eq:`ŷ = b<sub>0</sub> + b<sub>1</sub>x<sub>1</sub> + b<sub>2</sub>x<sub>2</sub> + … + b<sub>n</sub>x<sub>n</sub>`,
+      terms:[
+        {sym:`ŷ`, def:`Predicted (estimated average) value of the response`},
+        {sym:`b<sub>0</sub>`, def:`Intercept — average ŷ when all x variables equal zero`},
+        {sym:`b<sub>i</sub>`, def:`Slope for xᵢ — average change in ŷ per 1-unit increase in xᵢ, holding all other variables constant`},
+        {sym:`x<sub>i</sub>`, def:`The i-th explanatory variable`}
+      ]
+    }
+  },
+
+  { topic:'regression', tag:'Regression', c:'teal',
+    front:'What is simple linear regression — equation and meaning of each term?',
+    back:`<p><b>Simple regression</b> has exactly <b>one explanatory variable</b>. The model estimates a straight line through the data.</p>
+<p>The slope b₁ is the key number: it gives the <em>direction</em> and <em>size</em> of the relationship between x and ŷ.</p>
+<p>⚠️ The intercept b₀ is often not meaningful — check whether x = 0 is a realistic value before interpreting it.</p>`,
+    formula:{
+      eq:`ŷ = b<sub>0</sub> + b<sub>1</sub>x`,
+      terms:[
+        {sym:`ŷ`, def:`Predicted average response`},
+        {sym:`b<sub>0</sub>`, def:`Intercept — predicted ŷ when x = 0`},
+        {sym:`b<sub>1</sub>`, def:`Slope — estimated average change in ŷ per 1-unit increase in x`},
+        {sym:`x`, def:`The single explanatory (predictor) variable`}
+      ]
+    }
+  },
+
+  { topic:'regression', tag:'Regression', c:'teal',
+    front:'Multiple regression with 2 predictors — equation and what each coefficient means',
+    back:`<p>When there are <b>two explanatory variables</b> in the model, each coefficient is a <em>partial</em> effect — it captures the relationship with ŷ while the other variable is held constant.</p>
+<p>⚠️ Never interpret b₁ without saying "holding x₂ constant." The phrase is mandatory in this course.</p>
+<p>Example: if x₁ is a treatment type and x₂ is participant age, b₁ estimates the treatment effect among people of the same age.</p>`,
+    formula:{
+      eq:`ŷ = b<sub>0</sub> + b<sub>1</sub>x<sub>1</sub> + b<sub>2</sub>x<sub>2</sub>`,
+      terms:[
+        {sym:`b<sub>0</sub>`, def:`Intercept — average ŷ when x₁ = 0 and x₂ = 0`},
+        {sym:`b<sub>1</sub>`, def:`Average change in ŷ per 1-unit increase in x₁, holding x₂ constant`},
+        {sym:`b<sub>2</sub>`, def:`Average change in ŷ per 1-unit increase in x₂, holding x₁ constant`}
+      ]
+    }
+  },
+
+  { topic:'regression', tag:'Regression', c:'teal',
+    front:'How does an indicator variable (D) appear in the regression equation?',
+    back:`<p>An <b>indicator variable</b> (D) takes value 0 or 1. It shifts the intercept depending on which group an observation belongs to — the two groups get parallel lines with the same slope but different starting points.</p>
+<p><b>When D = 0</b> (reference group): ŷ = b₀ + b₁x</p>
+<p><b>When D = 1</b> (Group A): ŷ = (b₀ + b₂) + b₁x</p>
+<p>So <b>b₂</b> = the estimated average difference between Group A and the reference group, for the same value of x. Positive b₂ → Group A is higher.</p>`,
+    formula:{
+      eq:`ŷ = b<sub>0</sub> + b<sub>1</sub>x + b<sub>2</sub>D`,
+      terms:[
+        {sym:`D`, def:`Indicator variable: 1 = Group A, 0 = reference group`},
+        {sym:`b<sub>1</sub>`, def:`Slope of x — same for both groups (parallel lines)`},
+        {sym:`b<sub>2</sub>`, def:`Intercept shift — average difference between D=1 and D=0, at the same x`}
+      ]
+    }
+  },
+
+  { topic:'regression', tag:'Regression', c:'teal',
+    front:'What is an interaction model equation, and what does each coefficient mean?',
+    back:`<p>An <b>interaction model</b> allows the <em>slope</em> of x to differ across groups — not just the intercept. This is modeled by adding a product term D × x.</p>
+<p><b>When D = 0</b> (reference): slope of x = b₁</p>
+<p><b>When D = 1</b> (Group A): slope of x = b₁ + b₃</p>
+<p><b>b₃</b> = the difference in slopes between Group A and the reference. If b₃ is significant → lines are <b>not parallel</b> → interaction is present.</p>
+<p>To test the slope for Group A directly, refit the model with D = 1 as reference category.</p>`,
+    formula:{
+      eq:`ŷ = b<sub>0</sub> + b<sub>1</sub>x + b<sub>2</sub>D + b<sub>3</sub>(D×x)`,
+      terms:[
+        {sym:`b<sub>1</sub>`, def:`Slope of x for reference group (D=0)`},
+        {sym:`b<sub>2</sub>`, def:`Intercept shift for Group A (D=1)`},
+        {sym:`b<sub>3</sub>`, def:`Difference in slopes between D=1 and D=0 — if significant → interaction`},
+        {sym:`D×x`, def:`Interaction term: product of the indicator and the continuous variable`}
+      ]
+    }
+  },
+
+  { topic:'regression', tag:'Regression', c:'teal',
+    front:'What is a quadratic (non-linear) regression equation?',
+    back:`<p>When the scatterplot shows a <b>curved relationship</b>, you can add x² as an additional variable. The model is still "linear in the coefficients" — just curved in x.</p>
+<p><b>b₁</b> — linear component (direction at x = 0)<br>
+<b>b₂</b> — curvature: b₂ &lt; 0 → peak (opens downward); b₂ &gt; 0 → valley (opens upward)</p>
+<p>In SAS: create the squared variable with <code>x2 = x**2;</code> in a data step, then include both x and x2 in the model statement.</p>
+<p>⚠️ Don't extrapolate — only use the model for values of x within the observed range.</p>`,
+    formula:{
+      eq:`ŷ = b<sub>0</sub> + b<sub>1</sub>x + b<sub>2</sub>x<sup>2</sup>`,
+      terms:[
+        {sym:`b<sub>0</sub>`, def:`Intercept — average ŷ when x = 0`},
+        {sym:`b<sub>1</sub>`, def:`Linear effect of x`},
+        {sym:`b<sub>2</sub>`, def:`Curvature — negative: peak; positive: valley`},
+        {sym:`x<sup>2</sup>`, def:`New variable created as x squared (data step: x2 = x**2)`}
+      ]
+    }
+  },
+
+  { topic:'regression', tag:'Regression', c:'teal',
+    front:'How do you write the model equation when a qualitative variable has 3+ levels?',
+    back:`<p>A qualitative variable with <b>k levels</b> requires <b>k − 1 indicator variables</b>. SAS creates them automatically when you use <code>class educ(ref="3");</code>.</p>
+<p>All groups share the <em>same slope</em> b₃ for x (additive model — no interaction). Groups differ only in their intercepts.</p>
+<p>• Educ = 3 (ref): ŷ = b₀ + b₃x<br>
+• Educ = 1: ŷ = (b₀ + b₁) + b₃x&nbsp;&nbsp;→ b₁ = mean difference vs. ref<br>
+• Educ = 2: ŷ = (b₀ + b₂) + b₃x&nbsp;&nbsp;→ b₂ = mean difference vs. ref</p>`,
+    formula:{
+      eq:`ŷ = b<sub>0</sub> + b<sub>1</sub>D<sub>1</sub> + b<sub>2</sub>D<sub>2</sub> + b<sub>3</sub>x`,
+      terms:[
+        {sym:`D<sub>1</sub>`, def:`1 if group 1, else 0`},
+        {sym:`D<sub>2</sub>`, def:`1 if group 2, else 0`},
+        {sym:`b<sub>1</sub>`, def:`Intercept shift for group 1 vs. reference`},
+        {sym:`b<sub>2</sub>`, def:`Intercept shift for group 2 vs. reference`},
+        {sym:`b<sub>3</sub>`, def:`Slope of x — same for all groups (additive model)`}
+      ]
+    }
+  },
+
+  { topic:'regression', tag:'Regression', c:'teal',
+    front:'How do you write the ANOVA model as a regression equation?',
+    back:`<p>A <b>one-way ANOVA</b> with k groups is just a regression with k−1 indicator variables and no continuous predictors.</p>
+<p>• Group C (ref): average ŷ = b₀ (= mean of group C)<br>
+• Group A: average ŷ = b₀ + b₁&nbsp;&nbsp;→ b₁ = mean(A) − mean(C)<br>
+• Group B: average ŷ = b₀ + b₂&nbsp;&nbsp;→ b₂ = mean(B) − mean(C)</p>
+<p>Testing H₀: b₁ = 0 is equivalent to asking whether Group A's mean equals the reference. The global F-test tests all indicators jointly: H₀: b₁ = b₂ = 0.</p>`,
+    formula:{
+      eq:`ŷ = b<sub>0</sub> + b<sub>1</sub>D<sub>A</sub> + b<sub>2</sub>D<sub>B</sub>`,
+      terms:[
+        {sym:`b<sub>0</sub>`, def:`Average response in the reference group C`},
+        {sym:`b<sub>1</sub>`, def:`Difference: mean(A) − mean(C)`},
+        {sym:`b<sub>2</sub>`, def:`Difference: mean(B) − mean(C)`},
+        {sym:`D<sub>A</sub>`, def:`1 if Group A, else 0`},
+        {sym:`D<sub>B</sub>`, def:`1 if Group B, else 0`}
+      ]
+    }
+  },
+
+  { topic:'regression', tag:'Regression', c:'teal',
+    front:'What is linear regression and when do you use it?',
+    back:`<p>Linear regression models the <b>relationship between a continuous response variable (Y) and one or more explanatory variables (X)</b>.</p>
+<p>Each coefficient β tells you how much Y changes, on average, for a 1-unit change in that X, <em>while holding the other variables constant</em>.</p>
+<p><b>Simple regression</b>: one explanatory variable.<br>
+<b>Multiple regression</b>: two or more explanatory variables.</p>`,
+    eg:`Average Response = β₀ + β₁×TreatmentType + β₂×ParticipantAge → regression with two predictors.` },
+
+  { topic:'regression', tag:'Regression', c:'teal',
+    front:'How do you interpret a regression coefficient?',
+    back:`<p>For a <b>continuous predictor</b> (like age or score):<br>
+β₁ = the estimated average change in Y for each additional 1 unit of X, <b>holding all other variables constant</b>.</p>
+<p>For an <b>indicator variable</b> (like "Treatment B vs. Treatment A"):<br>
+β₁ = the estimated average difference in Y between that group and the reference group, <b>for the same values of all other variables</b>.</p>
+<p>Always state: direction (positive/negative), size (the number), units, and the "controlling for" phrase.</p>`,
+    eg:`β(Age) = −0.85 → "Controlling for treatment type, each 1-year increase in age is associated with an average decrease of 0.85 units in the response."` },
+
+  { topic:'regression', tag:'Regression', c:'teal',
+    front:'What is a control variable?',
+    back:`<p>A control variable is one you <b>include in the model to "hold it constant"</b> — not because it's what you're studying, but because it could be influencing the results.</p>
+<p>By including it, you can estimate the effect of your variable of interest "for participants with the same level of [control variable]."</p>
+<p>Example: to study the effect of treatment type on response, you include age as a control variable. This way, you're comparing people of the same age, making the comparison of treatment types fairer.</p>`,
+    eg:`Age is included as a control variable. Treatment type is the main variable of interest → can ask: "controlling for age, what is the effect of treatment?"` },
+
+  { topic:'regression', tag:'Regression', c:'teal',
+    front:'What is multicollinearity?',
+    back:`<p>Multicollinearity happens when two or more <b>explanatory variables are strongly correlated with each other</b>.</p>
+<p>This is a problem because the model can't tell which variable is responsible for changes in Y — the variables "share credit."</p>
+<p><b>Signs of multicollinearity:</b><br>
+• Coefficients change a lot when you add/remove a variable<br>
+• Large standard errors (wide confidence intervals)<br>
+• VIF ≥ 4 (a stat in SAS output)</p>
+<p>Key point: multicollinearity makes <em>inference</em> (tests, confidence intervals) unreliable. But prediction is still fine.</p>`,
+    eg:`Two predictors are highly correlated (r = 0.81). Adding one to the model makes the other's coefficient unreliable.` },
+
+  { topic:'regression', tag:'Regression', c:'teal',
+    front:'What is an interaction between a categorical and continuous variable?',
+    back:`<p>This type of interaction means: <b>the slope (effect) of the continuous variable is different for each group.</b></p>
+<p>Example: age reduces response time by a lot for treatment A, but barely at all for treatment B. The slope of age depends on which treatment was used.</p>
+<p>In SAS: you include a product term <code>Treatment * Age</code> in the model. If its p-value < 0.05, the slopes differ significantly across treatment groups.</p>
+<p>If significant: report the slope of the continuous variable separately for each group.</p>`,
+    eg:`Lines with different steepness or crossing → interaction present.<br>Parallel lines → no interaction.` },
+
+  { topic:'regression', tag:'Regression', c:'teal',
+    front:'What is the reference category and why does it matter?',
+    back:`<p>When a categorical variable has k levels, SAS automatically picks one as the <b>reference category</b> (usually alphabetically first or last, depending on settings).</p>
+<p>All other group coefficients are interpreted <b>relative to this reference</b>.</p>
+<p>Example: if the reference is "Treatment A," then β(Treatment_B) = the estimated average difference between B and A, controlling for other variables.</p>
+<p>To compare two non-reference categories (e.g. B vs. C), you subtract their β values: β(B) − β(C).</p>
+<p>To get a direct significance test for that comparison, refit the model with one of them as the reference.</p>`,
+    eg:`Reference = Treatment A → β(Treatment B) tests "B vs. A." To test "B vs. C," refit with B as reference.` },
+
+  // ─── CORRELATED DATA ──────────────────────────────────────────────
+  { topic:'correlated', tag:'Correlated Data', c:'amber',
+    front:'What is "correlated data" and when does it occur?',
+    back:`<p>Data are correlated when <b>multiple observations come from the same person</b> (or group), so they're not independent of each other.</p>
+<p>Example: each participant is measured under two different conditions. Their two measurements are related — people who naturally respond strongly to condition 1 will also respond strongly to condition 2.</p>
+<p>If you ignore this correlation, your standard errors will be wrong, making your p-values unreliable.</p>
+<p>Solution: use <code>proc MIXED</code> and add a correlation structure to the model.</p>`,
+    eg:`Scatterplot: participant's response under condition 1 vs. condition 2 → clear positive line → correlation present → must model it.` },
+
+  { topic:'correlated', tag:'Correlated Data', c:'amber',
+    front:'What is Compound Symmetry (CS)?',
+    back:`<p>Compound Symmetry (CS) is a way of describing the <b>correlation structure</b> within groups of observations.</p>
+<p>CS assumes: every pair of observations from the same person has the same correlation ρ (rho).</p>
+<p>When you only have <b>2 observations per person</b>, CS is always the right choice — because with only 2 obs, there's only one pair, so all correlation structures are equivalent.</p>
+<p>In SAS: add <code>repeated / type=CS subject=IDvariable;</code> inside proc MIXED.</p>`,
+    eg:`Each participant has 2 measurements → CS is the appropriate structure → proc MIXED with type=CS.` },
+
+  { topic:'correlated', tag:'Correlated Data', c:'amber',
+    front:'What are AIC and BIC used for?',
+    back:`<p>AIC and BIC are <b>model comparison statistics</b>. They help you choose between two models when you can't use a simple F-test.</p>
+<p>Rule: <b>lower AIC / BIC = better model</b>.</p>
+<p>They balance fit (how well the model explains the data) vs. complexity (number of parameters).</p>
+<p>⚠️ Critical rule: you can ONLY compare two models using AIC/BIC if they have the <b>same fixed effects</b> (same predictor terms). You cannot compare an additive model vs. an interaction model this way.</p>`,
+    eg:`CS model: AIC = 145.3. Independence model: AIC = 162.1. → CS model is better (lower AIC).` },
+
+  // ─── LOGISTIC ─────────────────────────────────────────────────────
+  { topic:'logistic', tag:'Logistic Reg.', c:'coral',
+    front:'What is logistic regression and when do you use it?',
+    back:`<p>Use logistic regression when your <b>response variable is binary</b> — it can only take two values, like 0 or 1 (yes/no, success/failure).</p>
+<p>You can't use regular linear regression because it might predict probabilities outside the range [0, 1], which makes no sense.</p>
+<p>Logistic regression models the <b>probability</b> that Y = 1, keeping predictions between 0 and 1 using a mathematical trick (the logit function).</p>
+<p>In SAS: use <code>proc GLIMMIX</code> with <code>dist=binary link=logit</code>.</p>`,
+    eg:`Did the participant choose option A? (0 = no, 1 = yes) → binary response → logistic regression.` },
+
+  { topic:'logistic', tag:'Logistic Reg.', c:'coral',
+    front:'How do you interpret coefficients in logistic regression?',
+    back:`<p>In logistic regression, you interpret the <b>sign</b> of the coefficient (at the 60605A level — not the exact value).</p>
+<p>• <b>Positive coefficient</b> + significant → higher X is associated with a <b>higher probability</b> of Y = 1.<br>
+• <b>Negative coefficient</b> + significant → higher X is associated with a <b>lower probability</b> of Y = 1.</p>
+<p>For significance: same rule as linear regression — compare p-value to α = 0.05.</p>
+<p>Optional (advanced): Odds Ratio = exp(β). OR > 1 → increases odds. OR < 1 → decreases odds.</p>`,
+    eg:`β(score) = 1.147, p < 0.0001 → positive and significant → "Higher score is associated with a higher probability of success (Y = 1)."` },
+
+  // ─── ADVANCED TOPICS ──────────────────────────────────────────────────
+  { topic:'regression', tag:'Regression', c:'teal',
+    front:'How do you detect multicollinearity from SAS output?',
+    back:`<p><b>Look for these warning signs in regression output:</b></p>
+<p><b>1. VIF (Variance Inflation Factor)</b> — found in SAS proc REG output<br>
+• VIF ≥ 4 → possible multicollinearity concern<br>
+• VIF ≥ 10 → serious multicollinearity problem</p>
+<p><b>2. Correlation matrix</b> — check correlations between explanatory variables<br>
+• r ≥ 0.7 or r ≤ −0.7 → strong correlation between two predictors → likely multicollinearity</p>
+<p><b>3. In SAS model output:</b><br>
+• Large standard errors on coefficients<br>
+• Wide confidence intervals<br>
+• Coefficient values change dramatically when you add/remove variables<br>
+• A variable is not significant alone, but becomes significant when another variable is removed</p>
+<p><b>Key point:</b> Multicollinearity makes inference unreliable (tests, CIs), but prediction is still OK.</p>`,
+    eg:`Two predictors have r = 0.81 → strong correlation → check VIF. If VIF = 4.2, multicollinearity is likely. Coefficient estimates may be unreliable; do not trust individual significance tests.` },
+
+  { topic:'anova', tag:'ANOVA', c:'blue',
+    front:'How do you read an interaction plot?',
+    back:`<p>An interaction plot shows the estimated mean response for each combination of factor levels. Two lines appear (one for each level of the second factor).</p>
+<p><b>No interaction:</b> The two lines are <b>parallel</b> → the effect of one factor is the same regardless of the other factor's level.</p>
+<p><b>Interaction present:</b> The two lines are <b>not parallel</b> → they may fan out, cross, or have different slopes → the effect of one factor depends on the level of the other.</p>
+<p><b>Why this matters:</b> The interaction plot is visual evidence. To confirm, run an F-test for the interaction term in the ANOVA table.<br>
+• Parallel lines + non-significant interaction → use additive model<br>
+• Non-parallel lines + significant interaction → interaction model is appropriate</p>
+<p><b>Important:</b> A plot that looks non-parallel is not proof of interaction — you must run the statistical test.</p>`,
+    eg:`Interaction plot shows lines crossing: line A increases with factor level, line B decreases → likely interaction → perform F-test for interaction term.` },
+
+  { topic:'basics', tag:'Basics First', c:'purple',
+    front:'What is Welch\'s t-test and when do you use it?',
+    back:`<p>Welch's t-test compares the means of <b>two independent groups</b> when the variances are <b>unequal</b> (heteroscedastic). The exam will tell you whether variances are unequal — your job is to know what to do next.</p>
+<p><b>Why not the standard t-test?</b> The standard t-test assumes equal variances. When that assumption is violated, use Welch's test instead — it does not require equal variances and gives reliable p-values and CIs.</p>
+<p><b>In SAS:</b> Use <code>proc TTEST</code> — Welch's test is the default output. For pairwise comparisons across k groups, run one proc TTEST per pair, then apply Bonferroni correction manually (multiply each p-value by the number of pairs).</p>`,
+    eg:`Data are heteroscedastic, 4 groups → 6 pairs → run 6 proc TTESTs, multiply each p-value by 6. Compare adjusted p-values to 0.05.` },
+
+  // ─── CORRELATED DATA — ADDITIONAL ────────────────────────────────
+  { topic:'correlated', tag:'Correlated Data', c:'amber',
+    front:'What is the AR(1) correlation structure, and when do you use it instead of CS?',
+    back:`<p>AR(1) (autoregressive of order 1) is a correlation structure for <strong>longitudinal data</strong> — same subjects measured at 3+ ordered time points.</p>
+<p>The key idea: observations <strong>closer in time are more strongly correlated</strong>. The correlation decays with the time gap: Corr(time i, time j) = ρ^|i−j|.</p>
+<p><strong>CS vs. AR(1) decision rule:</strong><br>
+• 2 measurements per subject → CS and AR(1) are mathematically identical; use CS.<br>
+• 3+ ordered time measurements → AR(1) is usually more realistic (nearby = more correlated).<br>
+• No time ordering → CS.</p>
+<p>In SAS: <code>repeated order / type=ar(1) subject=ID;</code><br>
+The ordering variable must be declared in the class statement.</p>`,
+    eg:`5 revenge questionnaires at 2-week intervals → nearby waves more correlated → AR(1) preferred. AIC/BIC favor AR(1) over CS in the course example.` },
+
+  { topic:'correlated', tag:'Correlated Data', c:'amber',
+    front:'How do you compare CS, AR(1), and independence models, and what is parsimony?',
+    back:`<p>Compare them using <strong>AIC and BIC</strong> from the proc MIXED output. All three have the same fixed effects (same predictors), so AIC/BIC comparison is valid.</p>
+<p><strong>Lower AIC/BIC = better-fitting structure.</strong></p>
+<p>If AIC and BIC disagree → both models are reasonable; use subject-matter reasoning.</p>
+<p><strong>Parsimony:</strong> Prefer the simpler model unless the more complex one offers substantially better fit. AIC and BIC penalize extra parameters, so they automatically reward parsimony.</p>
+<p>⚠️ You can only compare structures this way if the <strong>fixed effects are identical</strong> across models.</p>`,
+    eg:`Three models on same data: independence (AIC=3225), CS (AIC=3147), AR(1) (AIC=3119). AR(1) wins on both criteria → use AR(1).` },
+
+  { topic:'correlated', tag:'Correlated Data', c:'amber',
+    front:'What is heteroscedastic ANOVA with proc MIXED, and how does it differ from Welch\'s proc TTEST approach?',
+    back:`<p>When a factorial ANOVA has unequal variances, there are two approaches:</p>
+<p><strong>Welch (proc TTEST):</strong> Run one Welch t-test for each pair of groups, apply Bonferroni by hand. Works well for simple one-factor designs.</p>
+<p><strong>proc MIXED with group= :</strong> Fits a model that estimates a separate variance per group, then uses AIC/BIC to compare against the homoscedastic version. More flexible for multi-factor designs.</p>
+<p><code>proc mixed data=mydata;<br>
+  class factor;<br>
+  model response = factor;<br>
+  repeated / group=factor;<br>
+run;</code></p>
+<p>Compare heteroscedastic vs. homoscedastic proc MIXED by AIC/BIC (same fixed effects → valid). Prefer whichever fits better — but lean toward the simpler (homoscedastic) model if AIC/BIC agree.</p>`,
+    eg:`4 helmet models, unequal SDs → fit <code>repeated / group=MODEL;</code>. Compare AIC/BIC to the homoscedastic proc MIXED. If BIC favors simpler model → use homoscedastic.` },
+
+  // ─── REGRESSION — ADDITIONAL ──────────────────────────────────────
+  { topic:'regression', tag:'Regression', c:'teal',
+    front:'What are the four validity conditions of linear regression?',
+    back:`<p>For hypothesis tests and confidence intervals to be valid, the error term ε must satisfy four conditions:</p>
+<p><strong>1. Linearity:</strong> The relationship between X and Y is truly linear. Violated → estimates are biased (consider transforming X).<br>
+<strong>2. Independence:</strong> Observations are not correlated with each other. Violated → use proc MIXED instead of proc GLM.<br>
+<strong>3. Normality:</strong> Errors follow a normal distribution. Violated → tests may be unreliable, especially in small samples.<br>
+<strong>4. Homoscedasticity:</strong> The variance of errors is constant across all X values. Violated → standard errors are wrong.</p>
+<p>Check these conditions with <strong>residual plots</strong>. In this course, you should be able to name all four and identify which condition is violated from context or a graph.</p>`,
+    eg:`Data with repeated measures per person → independence violated → move to proc MIXED. Non-linear scatterplot → linearity violated → try a quadratic or inverse transformation.` },
+
+  { topic:'regression', tag:'Regression', c:'teal',
+    front:'How do you model a non-linear relationship using linear regression?',
+    back:`<p>You can fit non-linear shapes by <strong>transforming variables</strong>. The model is still "linear in parameters" — just not linear in the original X.</p>
+<p><strong>Quadratic:</strong> Add X² alongside X. Use when the relationship curves (increases then decreases, or vice versa).<br>
+<strong>Inverse:</strong> Replace X with 1/X. Use when Y decreases steeply at first then levels off.<br>
+<strong>Logarithmic:</strong> Replace X with log(X).</p>
+<p>In SAS:<br>
+<code>data copy; set mydata;<br>
+  x2 = x**2;<br>
+run;<br>
+proc glm data=copy;<br>
+  model y = x x2 / ss3 solution clparm;<br>
+run;</code></p>
+<p>Compare models using R² (higher = explains more variation). Choose the transformation that eliminates the non-linear pattern and has the highest R².</p>
+<p>⚠️ No extrapolation — the model is only valid within the observed range of X.</p>`,
+    eg:`Wind turbine: linear model R²=87%; quadratic R²=97%; inverse (1/velocity) R²=98%. Inverse fits best → recommend it. But don't use it to predict output at velocities far outside the observed range.` },
+
+];
+
+// =====================================================================
+// PRACTICE TEST TASKS
+// =====================================================================
+const TASKS = [
+  // ── TASK 1 ─────────────────────────────────────────────────────────
+  {
+    num:1,
+    title:'Skill: State hypotheses and choose the right test (one-way ANOVA)',
+    badge:'ANOVA', bc:'blue',
+    ctx:`<strong>Dataset to open in SAS OnDemand:</strong> <code>helmet.sas7bdat</code> (Quiz 1 / Chapter 2 exercises)<br><br>
+Run a one-way ANOVA on the GADD score by helmet MODEL (4 levels). Run the Welch test output (use <code>means MODEL / welch;</code> in proc GLM). The exam will state whether variances are equal or unequal — your job is to use the right test. Then answer the questions below.`,
+    qs:[
+      {
+        q:'State the null and alternative hypotheses for testing whether helmet model affects mean GADD score.',
+        ans:`<strong>Template (use this structure for any one-way ANOVA):</strong><br>
+H₀: The mean [response] is the same for all [k] levels of [factor].<br>
+H₁: At least two levels of [factor] have different mean [response] values.<br><br>
+<strong>Worked example (helmet data):</strong><br>
+H₀: The mean GADD score is the same for all four helmet models (μ₁ = μ₂ = μ₃ = μ₄).<br>
+H₁: At least two helmet models have different mean GADD scores.<br><br>
+<strong>Note:</strong> "At least two" is always the H₁ phrasing for any global ANOVA test — never say "all means are different."`
+      },
+      {
+        q:'You are told the variances are unequal across the four groups. What test should you use and why? Write the conclusion sentence.',
+        ans:`<strong>Template:</strong><br>
+When the variances are unequal (heteroscedastic), the standard F-test is not appropriate because it assumes equal variances. Use <strong>Welch's test</strong> instead — it does not make this assumption and gives valid p-values and confidence intervals under heteroscedasticity.<br><br>
+<strong>Conclusion template:</strong><br>
+"The p-value of Welch's test is [p] &lt; α = 5%. We reject H₀. At the 5% significance level, the data establish that [factor] has a statistically significant effect on the mean [response]."<br><br>
+<strong>Worked example:</strong> p &lt; 0.0001 → "The data establish that helmet model has a statistically significant effect on mean GADD score."<br><br>
+<strong>Causality check:</strong> Were participants randomly assigned to helmet models? If yes → causal language. If no (observational) → "is associated with."`
+      },
+      {
+        q:'You now want to identify which specific pairs of helmet models differ. Describe exactly how you would do this — which test, how many comparisons, and what correction.',
+        ans:`<strong>Template (heteroscedastic pairwise comparisons):</strong><br>
+Since the data are heteroscedastic, the pairwise tests from proc GLM (which assume equal variances) are not appropriate. Instead, use Welch's t-test via <code>proc TTEST</code> for each pair.<br><br>
+Number of pairs = C(k, 2) = k × (k−1) ÷ 2. For k = [number of groups]: [compute].<br><br>
+Apply a Bonferroni correction: multiply each raw p-value from proc TTEST by the number of pairs. Compare the adjusted p-value to α = 5%.<br><br>
+<strong>Worked example:</strong> k = 4 helmet models → C(4,2) = 6 pairs → multiply each proc TTEST p-value by 6. At the overall 5% level: model 4 differs from models 1, 2, and 3; models 1–3 do not differ from each other.`
+      }
+    ]
+  },
+
+  // ── TASK 2 ─────────────────────────────────────────────────────────
+  {
+    num:2,
+    title:'Skill: Two-way ANOVA — interaction, simple effects, Bonferroni',
+    badge:'ANOVA', bc:'blue',
+    ctx:`<strong>Dataset to open in SAS OnDemand:</strong> <code>helmet.sas7bdat</code> (Chapter 2 exercise 2, or <code>compgroups4.sas7bdat</code> for an additive example)<br><br>
+For the helmet data, run a two-way ANOVA with factors MODEL (4 levels) and IMPACT (2 levels) including an interaction term. Produce the interaction plot and the Type III ANOVA table. Then answer the questions below.`,
+    qs:[
+      {
+        q:'Looking at the interaction plot and the ANOVA table, should you use an additive model or an interaction model? Justify using both visual and statistical evidence.',
+        ans:`<strong>Template (step-by-step):</strong><br>
+<strong>Step 1 — Visual:</strong> Examine the interaction plot. If the lines are roughly parallel, an additive model may be appropriate. If the lines cross or fan out significantly, an interaction is likely.<br><br>
+<strong>Step 2 — Statistical:</strong> Look at the p-value for the interaction term (Factor A × Factor B row in the Type III SS table).<br>
+• p < 0.05 → significant interaction → use the interaction model.<br>
+• p ≥ 0.05 → no significant interaction → drop the term; use the additive model.<br><br>
+<strong>Worked example (helmet data):</strong> The interaction plot shows non-parallel lines (model 3 scores low for front impacts but high for rear impacts — the opposite pattern from other models). The interaction term is statistically significant (p < 0.0001). We use the interaction model and report simple effects.<br><br>
+<strong>Key rule:</strong> Always test the interaction FIRST. If significant, you cannot interpret main effects globally.`
+      },
+      {
+        q:'The interaction is significant. Describe how you would estimate the effect of MODEL for IMPACT = 1 (front impact), applying a Bonferroni correction. How many total tests are you correcting for?',
+        ans:`<strong>Template (simple effects with significant interaction):</strong><br>
+When the interaction is significant, report the effect of Factor A separately at each level of Factor B. For each level of Factor B:<br>
+1. Identify the relevant p-values from the pairwise comparisons table (the "Differences of Least Squares Means" output).<br>
+2. Count only the pairs relevant to <em>this level</em> of Factor B: C(k_A, 2) pairs.<br>
+3. Total corrections = C(k_A, 2) × number of levels of Factor B.<br>
+4. Multiply every relevant raw p-value by this total before concluding.<br><br>
+<strong>Conclusion template:</strong> "For [Factor B = level j], [Factor A level i] is estimated to have a mean [response] that is [difference] [higher/lower] than [Factor A level l], for the same level of [Factor B]. This difference is [significant / not significant] at the overall 5% level (adjusted p = raw p × [total tests] = [value])."<br><br>
+<strong>Worked example:</strong> k_MODEL = 4, k_IMPACT = 2 → C(4,2) × 2 = 6 × 2 = 12 total tests. For IMPACT = 1: model 3 stands out from the others (all adjusted p < 0.05 after ×12); models 1, 2, 4 do not differ from each other.`
+      }
+    ]
+  },
+
+  // ── TASK 3 ─────────────────────────────────────────────────────────
+  {
+    num:3,
+    title:'Skill: Multiple regression — R², coefficient interpretation, significance',
+    badge:'Regression', bc:'teal',
+    ctx:`<strong>Dataset to open in SAS OnDemand:</strong> <code>salaries.sas7bdat</code> (Chapter 3 exercise 2)<br><br>
+Fit the model: Average Salary = β₀ + β₁×Gender + β₂×Position + β₃×Experience. Use <code>proc GLM</code> with <code>/ ss3 clparm solution</code>. Then answer the questions below.`,
+    qs:[
+      {
+        q:'From the SAS output, what proportion of the variation in salary does the model explain? Write the sentence exactly as it should appear in an exam answer.',
+        ans:`<strong>Template (always use this exact phrasing):</strong><br>
+"The model explains [R²]% of the observed variation in [response variable]."<br><br>
+<strong>Worked example (salary data):</strong> "The model explains 80.2% of the observed variation in salary."<br><br>
+<strong>Important:</strong> R² is in the "R-Square" row of the fit statistics table at the top of the proc GLM output. Multiply by 100 to express as a percentage.`
+      },
+      {
+        q:'The coefficient for Gender is estimated at −2.2 (i.e., coding: 0 = male, 1 = female), with p = 0.04. Write the full interpretation sentence for this coefficient, including direction, size, significance, and a causality note.',
+        ans:`<strong>Template (indicator variable coefficient):</strong><br>
+"[Group defined by indicator = 1] is estimated to have a mean [response] that is [|β̂|] [units] [higher/lower] than [reference group], on average, for the same values of [other variables in the model]. This difference is statistically significant at the 5% level (p = [value])."<br><br>
+Then add the causality sentence:<br>
+• If randomly assigned: "Because [variable] was randomly assigned, this can be interpreted as a causal effect."<br>
+• If not: "Because [variable] was not randomly assigned, we cannot conclude a causal relationship. The data show only that [variable] is associated with the response, controlling for the other variables."<br><br>
+<strong>Worked example:</strong> "Female managers are estimated to earn $2,200 more per year on average than male managers of the same position rank and experience, and this difference is statistically significant (p = 0.043). Because gender was not randomly assigned to participants, we cannot conclude a causal relationship — this is an observational association."<br><br>
+<strong>Note:</strong> The sign of the coefficient depends on coding. Always state direction in plain language ("higher" / "lower"), not just the sign.`
+      },
+      {
+        q:'The coefficient for Experience is −0.47, even though a simple scatterplot shows salary and experience are positively correlated. Is this a contradiction? Explain.',
+        ans:`<strong>Template (sign reversal when controlling for other variables):</strong><br>
+This is not a contradiction. The coefficient in a multiple regression model estimates the effect of [variable] <em>holding all other variables constant</em>. When another variable is included that is correlated with [variable], the estimated effect can change in sign or magnitude — this is expected and reflects what the model is actually doing.<br><br>
+<strong>A possible substantive explanation:</strong> It is possible that [variable A] and [variable B] are both related to a third factor. For example, [explain mechanism in context]. So at the same level of [other variable], a higher [variable] may actually be associated with a lower [response].<br><br>
+<strong>Worked example:</strong> Salary and experience are positively correlated on their own, but when Position is held constant, more experienced employees at the <em>same rank</em> may be lower performers (they advanced more slowly) and thus earn less. So the negative sign within the model is not a contradiction — it reflects the conditional relationship.`
+      }
+    ]
+  },
+
+  // ── TASK 4 ─────────────────────────────────────────────────────────
+  {
+    num:4,
+    title:'Skill: Write and read model equations — intercepts, slopes, and groups',
+    badge:'Regression', bc:'teal',
+    ctx:`<strong>Dataset to open in SAS OnDemand:</strong> <code>RegLin4.sas7bdat</code> (Chapter 3 exercise 5) — or use the Quiz 3 dataset <code>quiz3_W2026.sas7bdat</code><br><br>
+Fit the model: Average <em>intention</em> = β₀ + β₁·D₁ + β₂·D₂ + β₃·fixation, where D₁ and D₂ are indicators for educ = 1 and educ = 2 (reference = educ = 3). Use <code>class educ(ref="3");</code> in proc GLM with <code>/ ss3 solution clparm</code>. Read the parameter estimates table carefully. Then answer the questions below.`,
+    qs:[
+      {
+        q:'From the SAS output you get: b₀ = 8.98, b₁ = 3.99 (educ=1 vs. ref), b₂ = −3.71 (educ=2 vs. ref), b₃ = −0.38 (fixation). Write out the full regression equation, then derive the specific equation for each education level (educ = 1, 2, and 3 separately).',
+        ans:`<strong>Step 1 — Write the general equation with estimated values:</strong><br>
+ŷ = 8.98 + 3.99·D₁ + (−3.71)·D₂ + (−0.38)·fixation<br><br>
+<strong>Step 2 — Derive the group-specific equation by substituting D values:</strong><br>
+<em>Template: set D₁ and D₂ to 0 or 1 based on which group, then simplify.</em><br><br>
+• <strong>educ = 3 (reference, D₁=0, D₂=0):</strong><br>
+&nbsp;&nbsp;ŷ = 8.98 + 3.99(0) + (−3.71)(0) + (−0.38)·fixation<br>
+&nbsp;&nbsp;ŷ = 8.98 − 0.38·fixation<br><br>
+• <strong>educ = 1 (D₁=1, D₂=0):</strong><br>
+&nbsp;&nbsp;ŷ = 8.98 + 3.99(1) + (−3.71)(0) + (−0.38)·fixation<br>
+&nbsp;&nbsp;ŷ = 12.97 − 0.38·fixation<br><br>
+• <strong>educ = 2 (D₁=0, D₂=1):</strong><br>
+&nbsp;&nbsp;ŷ = 8.98 + 3.99(0) + (−3.71)(1) + (−0.38)·fixation<br>
+&nbsp;&nbsp;ŷ = 5.27 − 0.38·fixation<br><br>
+<strong>What is similar across the three equations?</strong> The slope of fixation is the same (−0.38) for all groups — the lines are parallel (additive model, no interaction).<br>
+<strong>What is different?</strong> The intercept shifts by b₁ or b₂ — reflecting the estimated mean difference between each group and the reference when fixation = 0.`
+      },
+      {
+        q:'Interpret the coefficient b₁ = 3.99 (educ=1 vs. educ=3) in a full exam sentence. Is it statistically significant?',
+        ans:`<strong>Template (indicator variable coefficient):</strong><br>
+"[Group defined by D=1] is estimated to have a mean [response] that is [|b|] [units] [higher/lower] than [reference group], on average, for the same value of [continuous variable(s) in the model]."<br><br>
+Then add: "This difference is [statistically significant / not statistically significant] at the 5% level (p = [value] [< / ≥] 0.05)."<br><br>
+<strong>Worked example:</strong><br>
+"Users with less than college education (educ = 1) are estimated to have a mean purchase intention that is 3.99 points higher than users with university education (educ = 3), for the same fixation duration. This difference is statistically significant at the 5% level (p = 0.022 < 0.05)."<br><br>
+<strong>Key rules:</strong><br>
+• Always specify the reference group explicitly ("compared to educ = 3")<br>
+• Always include "for the same [other variables]"<br>
+• Sign of b₁ tells you direction: positive = Group 1 is higher than reference`
+      },
+      {
+        q:'Now consider an interaction model: ŷ = b₀ + b₁D₁ + b₂D₂ + b₃·fixation + b₄·(D₁×fixation) + b₅·(D₂×fixation). Write out the equation for educ = 1 specifically. Which coefficients make up the slope of fixation for that group?',
+        ans:`<strong>Step 1 — Substitute D₁=1, D₂=0 for educ = 1:</strong><br>
+ŷ = b₀ + b₁(1) + b₂(0) + b₃·fixation + b₄·(1×fixation) + b₅·(0×fixation)<br>
+ŷ = (b₀ + b₁) + (b₃ + b₄)·fixation<br><br>
+<strong>Interpretation:</strong><br>
+• Intercept for educ = 1: <strong>b₀ + b₁</strong><br>
+• Slope of fixation for educ = 1: <strong>b₃ + b₄</strong><br><br>
+<strong>What b₄ means:</strong> b₄ is the <em>difference in the fixation slope</em> between educ = 1 and the reference (educ = 3). If b₄ is significant → the slope differs between these two groups → lines are not parallel → interaction is real.<br><br>
+<strong>Critical rule:</strong> The SAS output does NOT directly test whether the total slope (b₃ + b₄) for educ = 1 is significantly different from zero. To get that test, refit the model with educ = 1 as the reference category. The new b₃ in that output is (b₃_old + b₄_old) and its p-value is the test you need.`
+      }
+    ]
+  },
+
+
+  // ── TASK 4b ────────────────────────────────────────────────────────
+  {
+    num:5,
+    title:'Skill: Control variables, multicollinearity, and VIF',
+    badge:'Regression', bc:'teal',
+    ctx:`<strong>Dataset to open in SAS OnDemand:</strong> <code>salaries.sas7bdat</code> or <code>growth.sas7bdat</code> (Chapter 3 exercises 1 & 2)<br><br>
+For growth.sas7bdat: fit the model Weight = β₀ + β₁×Age + β₂×Height + β₃×Gender. Add the <code>tolerance</code> option to the model statement to get VIF values. Also compute the correlation matrix between predictors. Then answer the questions below.`,
+    qs:[
+      {
+        q:'The VIF for Height is 3.82 and the correlation between Age and Height is r = 0.81. Is there a multicollinearity problem? What are the consequences?',
+        ans:`<strong>Template (diagnosing multicollinearity — use all three criteria):</strong><br>
+1. <strong>Correlation matrix:</strong> A correlation of |r| ≥ 0.7 between two explanatory variables signals possible multicollinearity. In this case, r = [value] between [variable X] and [variable Z], which is [above/below] the threshold.<br><br>
+2. <strong>VIF:</strong> VIF ≥ 4 → possible concern; VIF ≥ 10 → serious problem. Here, VIF([variable]) = [value].<br><br>
+3. <strong>Coefficient stability:</strong> Does the estimated coefficient for [variable] change substantially when [correlated variable] is added or removed? If yes, this is a sign of multicollinearity.<br><br>
+<strong>Consequences:</strong> Multicollinearity makes <em>inference</em> unreliable (significance tests and confidence intervals for individual coefficients cannot be trusted). However, it does <em>not</em> prevent using the model for prediction, as long as there is no extrapolation.<br><br>
+<strong>Worked example:</strong> r(Age, Height) = 0.81 ≥ 0.7 (flag); VIF ≈ 3.8 (borderline); and Age's coefficient changed from +11.3 to +3.1 when Height was added (large change). We conclude there is multicollinearity. We should not rely on the significance test for Age in the multiple regression model.`
+      },
+      {
+        q:'Why is Height called a "control variable" in a study primarily interested in the effect of Age on weight? What does including it change about how you interpret the Age coefficient?',
+        ans:`<strong>Template (control variable explanation):</strong><br>
+A control variable is one included in the model not because it is the primary focus of the study, but because it could confound the relationship between the explanatory variable of interest and the response. Including it ensures the comparison of [main variable] is made among observations that are otherwise similar in [control variable].<br><br>
+<strong>Effect on interpretation:</strong> Once [control variable] is in the model, the coefficient of [main variable] is interpreted "controlling for [control variable]" — i.e., it estimates the relationship between [main variable] and [response] for individuals with the same value of [control variable].<br><br>
+<strong>Worked example:</strong> In a study of how Age affects Weight, Height is a control variable. Children of the same age can have very different heights, and taller children tend to weigh more. By including Height, we compare children of the same height, isolating the age effect. The Age coefficient then means: "for children of the same height and gender, each additional year of age is associated with a [β₁]-pound change in weight."`
+      }
+    ]
+  },
+
+  // ── TASK 5 ─────────────────────────────────────────────────────────
+  {
+    num:6,
+    title:'Skill: Categorical × continuous interaction in regression',
+    badge:'Regression', bc:'teal',
+    ctx:`<strong>Dataset to open in SAS OnDemand:</strong> <code>RegLin4.sas7bdat</code> (Chapter 3 exercise 5, or the Quiz 3 dataset quiz3_W2026.sas7bdat with Visualisation and Exp_data)<br><br>
+Fit a model with an interaction between a categorical factor (e.g., educ with 3 levels) and a continuous variable (e.g., fixation). Use <code>class educ(ref="3");</code> in proc GLM, and include the product terms in the model statement. Then answer the questions below.`,
+    qs:[
+      {
+        q:'The interaction between the categorical factor (3 levels) and the continuous variable is significant (p < 0.0001). What does this mean in plain language, and how does it change how you report the effect of the continuous variable?',
+        ans:`<strong>Template (significant categorical × continuous interaction):</strong><br>
+A significant interaction between a categorical factor and a continuous variable means that the <em>slope</em> of the relationship between the continuous variable and the response is different for each level of the categorical factor. You cannot report a single "overall" slope — you must estimate it separately for each group.<br><br>
+<strong>Sentence template:</strong><br>
+"Since the interaction between [categorical factor] and [continuous variable] is statistically significant (p = [value] < 5%), the effect of [continuous variable] on mean [response] is not the same for all levels of [categorical factor]. We therefore estimate the slope of [continuous variable] separately for each level of [categorical factor]."<br><br>
+<strong>For each group:</strong> Write the equation. For the reference group, the slope is directly β̂(continuous). For other groups, the slope is β̂(continuous) + β̂(interaction term for that group). Test each slope's significance using the appropriate hypothesis test or by refitting the model with a different reference category.<br><br>
+<strong>Worked example (educ data):</strong> For educ = 3 (reference): slope of fixation = 0.50 (p = 0.009, significant). For educ = 1: slope = 0.50 + 0.62 = 1.12 (to test this directly, refit with educ = 1 as reference).`
+      },
+      {
+        q:'You want to test whether fixation duration has a significant effect on average response when the categorical factor is at level 1 (not the reference). Model output only shows the slope directly for the reference group. What do you do?',
+        ans:`<strong>Template (testing the slope for a non-reference group):</strong><br>
+The SAS output only gives you a direct p-value for the slope of [continuous variable] when [categorical factor] = [reference category]. For any other level, the slope is a <em>sum</em> of two coefficients (β̂_continuous + β̂_interaction), and no single row in the output tests this sum directly.<br><br>
+<strong>Solution:</strong> Refit the model with the group of interest as the new reference category (change the <code>ref=</code> in the class statement). In the new output, the main coefficient for [continuous variable] now directly gives the slope for that group — and its p-value is the test you need.<br><br>
+<strong>Template sentence after refitting:</strong><br>
+"For [factor = level j], a 1-unit increase in [continuous variable] is associated with an estimated average [increase/decrease] of [|slope|] [units] in [response], controlling for [other variables]. This effect is [significant / not significant] at the 5% level (p = [value])."<br><br>
+<strong>Worked example:</strong> Refit with educ = 1 as reference. The new β̂(fixation) = 1.12, p = 0.032 → significant. "For users with less than college education, each additional second of fixation is associated with an estimated average increase of 1.12 points in purchase intention, controlling for education level. This effect is statistically significant (p = 0.032)."`
+      }
+    ]
+  },
+
+  // ── TASK 6 ─────────────────────────────────────────────────────────
+  {
+    num:7,
+    title:'Skill: Correlated data — choosing a structure, justifying proc MIXED',
+    badge:'Correlated Data', bc:'amber',
+    ctx:`<strong>Dataset to open in SAS OnDemand:</strong> <code>vibro_chair_reorg.sas7bdat</code> (Chapter 4 exercise 1)<br><br>
+Each of the 29 participants provided two measurements (one per seat type). Fit (a) a classic additive ANOVA with proc MIXED assuming independence, and (b) the same model with a Compound Symmetry structure (<code>repeated / type=CS subject=ID_subject;</code>). Produce the AIC/BIC for both models. Also produce a scatterplot of each participant's two measurements (one seat vs. the other). Then answer the questions below.`,
+    qs:[
+      {
+        q:'How do you justify using a correlation structure at all? Use both the scatterplot and a subject-matter argument.',
+        ans:`<strong>Template (justifying a correlated-data model — always use both arguments):</strong><br>
+<strong>Subject-matter argument:</strong> Because [number] measurements were taken on each [participant/unit/subject], their observations are not independent. [Subjects/participants] who naturally have [high/low] values on [response] tend to have [high/low] values regardless of the [condition/treatment]. This within-subject similarity is a source of correlation that must be modeled.<br><br>
+<strong>Graphical argument:</strong> A scatterplot of each subject's [condition 1] measurement vs. their [condition 2] measurement shows a [strong/moderate] positive association. Subjects who score [high/low] under one condition also tend to score [high/low] under the other. This confirms that the within-subject correlation is real and substantial — ignoring it would produce incorrect standard errors and p-values.<br><br>
+<strong>Worked example (vibro-kinetic data):</strong> Each participant was measured with both the vibro-kinetic and standard seat, so their two observations are not independent. The scatterplot shows a clear positive trend — participants with high electrodermal activity with one seat also show high activity with the other. A model with a correlation structure (Compound Symmetry) is therefore more appropriate than a standard independent-errors model.`
+      },
+      {
+        q:'The AIC is lower for the CS model (AIC = 148.3) vs. the independence model (AIC = 161.7), but BIC is slightly lower for independence (BIC = 152.1 vs. BIC = 151.8). What do you conclude? Write the full exam sentence.',
+        ans:`<strong>Template (AIC and BIC disagree):</strong><br>
+When AIC and BIC disagree, both models can be considered reasonable. The AIC favors the more complex model (with a correlation structure) while the BIC, which penalizes complexity more heavily, marginally prefers the simpler model. In this situation, the subject-matter argument becomes decisive: if there are strong theoretical or graphical reasons to believe observations are correlated, prefer the model that accounts for this, even if BIC does not strongly favor it.<br><br>
+<strong>Full exam sentence template:</strong><br>
+"The AIC is lower for the [model A] model ([value] vs. [value]), favoring it. The BIC marginally favors the [model B] model ([value] vs. [value]). Given the disagreement, and given that [subject-matter reason for correlation], we prefer the [model with correlation structure] on both statistical and substantive grounds."<br><br>
+<strong>Critical rule:</strong> You can only compare these two models with AIC/BIC because they have the <em>same fixed effects</em> (same predictor terms). If the fixed parts differed (e.g., one had an interaction and one didn't), AIC/BIC comparison would not be valid.`
+      },
+      {
+        q:'Would it make sense to consider an AR(1) structure instead of CS for this dataset? Why or why not?',
+        ans:`<strong>Template (CS vs. AR(1) — when each applies):</strong><br>
+<strong>Use Compound Symmetry (CS) when:</strong> Each subject/group has exactly 2 measurements, OR when there is no natural ordering to the repeated measurements, OR when there is no reason to think measurements closer together in time (or condition) are more correlated than distant ones.<br><br>
+<strong>Use AR(1) when:</strong> Each subject has 3 or more measurements that are ordered in time (longitudinal data), AND there is reason to believe that measurements closer in time are more strongly correlated than measurements far apart in time. The correlation decreases with time lag.<br><br>
+<strong>Key fact:</strong> When there are only 2 measurements per subject, CS and AR(1) are mathematically equivalent — they will give the exact same result. It only matters to distinguish them when there are 3+ measurements.<br><br>
+<strong>Worked example (vibro data):</strong> Each participant has exactly 2 measurements (one per seat type). Since there is only one pair per subject, CS is always the right choice — AR(1) would give identical results and is unnecessarily complex to specify.`
+      }
+    ]
+  },
+
+  // ── TASK 7 ─────────────────────────────────────────────────────────
+  {
+    num:8,
+    title:'Skill: AR(1) structure for longitudinal data',
+    badge:'Correlated Data', bc:'amber',
+    ctx:`<strong>Dataset to open in SAS OnDemand:</strong> <code>revenge.sas7bdat</code> (Chapter 4 lecture — longitudinal example)<br><br>
+Each of 80 subjects provided 5 revenge scores at two-week intervals. Create an <code>order</code> variable (= t), then fit three models using proc MIXED: (1) independence (no repeated statement), (2) CS structure, (3) AR(1) structure (<code>type=ar(1)</code>). Compare AIC/BIC across all three. Then answer the questions below.`,
+    qs:[
+      {
+        q:'Why is AR(1) more natural than CS for this longitudinal dataset? Explain the intuition.',
+        ans:`<strong>Template (intuition for AR(1) vs. CS):</strong><br>
+Compound Symmetry assumes that every pair of observations from the same subject is equally correlated — the correlation between measurement 1 and measurement 2 is the same as between measurement 1 and measurement 5. This is often unrealistic for longitudinal data.<br><br>
+AR(1) (autoregressive of order 1) assumes that observations <em>closer in time</em> are more strongly correlated, and the correlation decreases as the time gap increases. Mathematically: Corr(measurements i and j) = ρ^|i−j|, where ρ is between 0 and 1. This decay pattern is usually more realistic for repeated measurements over time.<br><br>
+<strong>Template for exam:</strong><br>
+"Because measurements were taken at [equal/ordered] time intervals on the same subjects, it is reasonable to expect that measurements closer in time are more correlated than distant ones. This motivates an AR(1) structure rather than a CS structure."<br><br>
+<strong>Worked example:</strong> The five revenge scores are separated by two-week intervals. Intuitively, a person's desire for revenge at week 2 should be more similar to their score at week 4 than at week 10. AR(1) captures this decay; CS does not. The AIC and BIC both favor AR(1) over both CS and independence in this dataset.`
+      },
+      {
+        q:'The AR(1) model shows that the variable "t" (time) has a significant negative coefficient. Write the full interpretation sentence.',
+        ans:`<strong>Template (continuous variable in a correlated-data model):</strong><br>
+Interpretation of coefficients in proc MIXED models is identical to standard regression — you still use "controlling for" language and report direction, size, and significance. The only difference is that the model also accounts for within-subject correlation in the error structure.<br><br>
+<strong>Template sentence:</strong><br>
+"Controlling for [other variables in the model], a 1-unit increase in [time variable] is associated with an estimated average [decrease/increase] of [|β̂|] [units] in [response], on average. This effect is statistically significant at the 5% level (p = [value] < 0.05). Because [subjects were not randomly assigned to time points / the study is observational], we describe this as an association rather than a causal effect."<br><br>
+<strong>Worked example:</strong> "Controlling for gender, age, vindictive complaining score, and word-of-mouth score, each additional questionnaire wave (approximately 2 more weeks elapsed) is associated with an estimated average decrease of 0.569 in the desire for revenge score. This effect is statistically significant (p < 0.05)."`
+      }
+    ]
+  },
+
+  // ── TASK 8 ─────────────────────────────────────────────────────────
+  {
+    num:9,
+    title:'Skill: Logistic regression — interpretation and significance',
+    badge:'Logistic Reg.', bc:'coral',
+    ctx:`<strong>Dataset to open in SAS OnDemand:</strong> <code>intention3_Eng.sas7bdat</code> (Chapter 5 — Advanced Modeling)<br><br>
+Run the logistic regression model using proc GLIMMIX: <code>model purchase(ref="0") = sex age income educ marital fixation emotion / dist=binary link=logit solution;</code>. Also add <code>lsmeans income / pdiff=all adjust=sidak stepdown cl;</code> to compare income categories. Then answer the questions below.`,
+    qs:[
+      {
+        q:'The coefficient for "fixation" is 1.147 (p < 0.0001). Interpret this result in plain language suitable for an exam answer.',
+        ans:`<strong>Template (logistic regression coefficient — sign-based interpretation):</strong><br>
+In logistic regression, we interpret the <em>sign</em> of the coefficient to determine the direction of the association, and we use the p-value to determine whether it is statistically significant. We do not interpret the numerical value directly as a unit change (unlike linear regression).<br><br>
+<strong>Template sentence for a significant positive coefficient:</strong><br>
+"A higher [explanatory variable] is associated with a higher probability that [Y = 1], controlling for the other variables in the model. This association is statistically significant at the 5% level (p = [value])."<br><br>
+<strong>Template sentence for a significant negative coefficient:</strong><br>
+"A higher [explanatory variable] is associated with a lower probability that [Y = 1], controlling for the other variables in the model. This association is statistically significant at the 5% level (p = [value])."<br><br>
+<strong>Worked example:</strong> "The longer a participant stares at the candy advertisement, the more likely it is that they will purchase the candy (positive coefficient = 1.147, p < 0.0001). This effect is statistically significant at the 5% level, controlling for all other variables in the model."<br><br>
+<strong>Optional (if asked — odds ratio):</strong> The odds ratio = exp(β̂) = exp(1.147) ≈ 3.15. Each additional second of fixation multiplies the odds of purchasing by approximately 3.15.`
+      },
+      {
+        q:'The income variable has 3 categories. At the overall 5% level, category 1 differs significantly from category 2 (adjusted p = 3.9%), but neither differs from category 3. Write the conclusion sentence and explain how you applied the multiple-testing correction.',
+        ans:`<strong>Template (pairwise comparisons in logistic regression — same logic as ANOVA):</strong><br>
+When a categorical variable has k levels, there are C(k, 2) pairwise comparisons. The LSMEANS output with <code>adjust=sidak stepdown</code> applies a Holm-Sidak correction automatically. Read the "Adj P" column directly.<br><br>
+<strong>Template conclusion sentence:</strong><br>
+"At the overall 5% significance level, there is a statistically significant difference in the probability of [Y = 1] between [category i] and [category j] (adjusted p = [value]). No significant difference is found between [other pairs] (adjusted p = [values])."<br><br>
+<strong>Worked example:</strong> "At the overall 5% significance level, users in income category 1 (under $20,000/year) have a significantly higher probability of purchasing the candy than users in income category 2 ($20,000–$60,000) (adjusted p = 3.9%). No significant differences are detected between category 3 and the other two categories."<br><br>
+<strong>Note on causality:</strong> Because participants were not randomly assigned to income categories (income is an observed characteristic), we describe this as an association, not a cause.`
+      }
+    ]
+  }
+];
+
+// =====================================================================
+// CHEAT SHEET DATA
+// =====================================================================
+const CHEAT_SHEET = [
+  {
+    title:'Regression equation quick reference',
+    full:true,
+    html:`<table class="cs-table">
+<thead><tr><th>Model type</th><th>Equation</th><th>Key interpretation</th></tr></thead>
+<tbody>
+<tr>
+  <td><b>Simple regression</b><br>(1 continuous predictor)</td>
+  <td style="font-family:Georgia,serif;font-size:13px;letter-spacing:.02em">ŷ = b₀ + b₁x</td>
+  <td>b₁ = average change in ŷ per 1-unit increase in x</td>
+</tr>
+<tr>
+  <td><b>Multiple regression</b><br>(2+ predictors)</td>
+  <td style="font-family:Georgia,serif;font-size:13px">ŷ = b₀ + b₁x₁ + b₂x₂ + … + bₙxₙ</td>
+  <td>Each bᵢ = change in ŷ per 1-unit increase in xᵢ, <em>holding all others constant</em></td>
+</tr>
+<tr>
+  <td><b>With indicator D</b><br>(categorical, 2 groups)</td>
+  <td style="font-family:Georgia,serif;font-size:13px">ŷ = b₀ + b₁x + b₂D</td>
+  <td>b₂ = mean difference between D=1 and D=0, same x. Lines are parallel (same slope).</td>
+</tr>
+<tr>
+  <td><b>With interaction</b><br>(different slopes per group)</td>
+  <td style="font-family:Georgia,serif;font-size:13px">ŷ = b₀ + b₁x + b₂D + b₃(D×x)</td>
+  <td>b₃ = difference in slopes between D=1 and D=0. Lines are NOT parallel.</td>
+</tr>
+<tr>
+  <td><b>Quadratic</b><br>(curved relationship)</td>
+  <td style="font-family:Georgia,serif;font-size:13px">ŷ = b₀ + b₁x + b₂x²</td>
+  <td>Create x² in a data step. b₂ &lt; 0 = peak; b₂ &gt; 0 = valley.</td>
+</tr>
+<tr>
+  <td><b>3-level factor (k−1 = 2 indicators)</b></td>
+  <td style="font-family:Georgia,serif;font-size:13px">ŷ = b₀ + b₁D₁ + b₂D₂ + b₃x</td>
+  <td>Ref group: ŷ = b₀ + b₃x. Group 1: intercept shifts by b₁. Group 2: shifts by b₂.</td>
+</tr>
+</tbody></table>
+<div style="margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:10px">
+  <div class="cs-alert"><b>⚠ Intercept (b₀):</b> Average ŷ when ALL x variables = 0. Often not meaningful (e.g., age = 0). Always check whether x = 0 is plausible before interpreting b₀.</div>
+  <div class="cs-tip"><b>✓ Additive vs. interaction:</b> Additive model → parallel lines (same slope, different intercepts). Interaction model → non-parallel lines (different slopes AND intercepts).</div>
+</div>`
+  },
+  {
+    title:'Quick SAS output reference',
+    html:`<table class="cs-table">
+<thead><tr><th>What you\'re looking for</th><th>Where to find it</th><th>What it means</th></tr></thead>
+<tbody>
+<tr><td><b>Test statistic (F, t, or χ²)</b></td><td>Left side of the main results table</td><td>How large the effect is relative to noise. Bigger (usually) = stronger signal.</td></tr>
+<tr><td><b>Pr > [Test]</b></td><td>Right side of the main results table</td><td>The p-value. Compare to α = 0.05. If p < 0.05, reject H₀.</td></tr>
+<tr><td><b>Parameter estimate</b></td><td>Parameter Estimates section (regression)</td><td>The coefficient β. Sign shows direction; absolute value shows size.</td></tr>
+<tr><td><b>Standard error</b></td><td>Right of the estimate</td><td>Uncertainty in the coefficient. Larger SE = less precision = wider CI.</td></tr>
+<tr><td><b>95% Confidence Limits</b></td><td>Far right of Parameter Estimates table</td><td>Range of plausible values. If the range includes 0, the coefficient is not significant.</td></tr>
+<tr><td><b>LSMEAN</b> values</td><td>Least Squares Means output</td><td>Estimated group averages, controlling for other factors. Use these, not raw averages.</td></tr>
+<tr><td><b>Adj P</b> in pairwise table</td><td>Differences of Least Squares Means</td><td>P-value already corrected for multiple tests (if you used adjust=sidak). If adjust=t → raw p-value → apply Bonferroni manually.</td></tr>
+<tr><td><b>R-Square</b></td><td>Fit Statistics (top of proc GLM output)</td><td>Proportion of variance explained. Report as "The model explains [R²]% of the variation in [Y]."</td></tr>
+<tr><td><b>AIC / BIC</b></td><td>Fit Statistics (proc MIXED)</td><td>Lower = better model. Only compare models with the same fixed effects (same predictors).</td></tr>
+</tbody></table>`
+  },
+  {
+    title:'Exact sentences to write in your exam',
+    full:true,
+    html:`<div class="cs-phrase"><span class="plab">Writing a group-specific equation from output</span>Start with the full equation: ŷ = b₀ + b₁x + b₂D + b₃(D×x). Substitute the group's D value (0 or 1), then simplify. <em>Example — Group A (D=1):</em> ŷ = (b₀+b₂) + (b₁+b₃)x. Substitute the estimated numbers from SAS output.</div>
+<div class="cs-phrase"><span class="plab">Stating H₀ and H₁ (ANOVA)</span>"H₀: the mean [response] is the same for all levels of [Factor A], for a given level of [Factor B].<br>H₁: at least two levels of [Factor A] have different mean [response] values, for a given level of [Factor B]."</div>
+<div class="cs-phrase"><span class="plab">Stating H₀ and H₁ (regression coefficient)</span>"H₀: β([variable]) = 0 — [variable] has no effect on mean [response], controlling for the other variables.<br>H₁: β([variable]) ≠ 0."</div>
+<div class="cs-phrase"><span class="plab">Significant result (reject H₀)</span>"The p-value is [p] &lt; α = 5%. We reject H₀. At the 5% significance level, the data <em>establish that</em> [factor/variable] has a statistically significant effect on mean [response], once [other factors] are taken into account."</div>
+<div class="cs-phrase"><span class="plab">Non-significant result (do not reject H₀)</span>"The p-value is [p] &gt; α = 5%. We do not reject H₀. At the 5% significance level, the data do not support the claim that [factor/variable] has a significant effect on mean [response]."</div>
+<div class="cs-phrase"><span class="plab">Continuous predictor coefficient</span>"Controlling for [other variables], a 1-unit increase in [X] is associated with an estimated average [increase / decrease] of [|β̂|] [units of Y] in [response variable], on average."</div>
+<div class="cs-phrase"><span class="plab">Indicator variable coefficient</span>"[Group A] is estimated to have a mean [response] that is [|β̂|] [units] [higher / lower] than [reference group], on average, for the same values of [other variables]."</div>
+<div class="cs-phrase"><span class="plab">Interaction is significant → use simple effects</span>"Since the interaction between [A] and [B] is statistically significant (p = [p] &lt; 5%), the effect of [A] on mean [response] is not the same at all levels of [B]. We therefore estimate the effect of [A] separately for each level of [B]."</div>
+<div class="cs-phrase"><span class="plab">Interaction is NOT significant → use additive model</span>"The interaction term is not statistically significant (p = [p] &gt; 5%). We proceed with the additive model. The effect of [A] on mean [response] is estimated to be the same regardless of the level of [B]."</div>
+<div class="cs-phrase"><span class="plab">Bonferroni correction</span>"Since [k] tests are relevant, we apply a Bonferroni correction by multiplying each p-value by [k]. We then compare the adjusted p-values to α = 5%."</div>
+<div class="cs-phrase"><span class="plab">R² model fit</span>"The model explains [R²]% of the observed variation in [response variable]."</div>
+<div class="cs-phrase"><span class="plab">Causality — randomized variable</span>"Because [variable] was randomly assigned to participants, the observed effect can be interpreted as a causal relationship: [variable] has an effect on mean [response]."</div>
+<div class="cs-phrase"><span class="plab">Causality — non-randomized variable</span>"Because [variable] was not randomly assigned, we cannot conclude a causal relationship. The data show only that [variable] is associated with [response], controlling for the other variables in the model."</div>
+<div class="cs-phrase"><span class="plab">Justifying a CS model for correlated data</span>"Because two measurements were taken on each participant, their observations are not independent. A scatterplot of the two measurements per participant shows a positive association, confirming within-subject correlation. We therefore use proc MIXED with a Compound Symmetry structure."</div>
+<div class="cs-phrase"><span class="plab">Comparing models with AIC/BIC</span>"Both AIC and BIC are lower for the [CS / interaction / fuller] model, indicating a better fit. This, combined with the subject-matter rationale, leads us to prefer the [model name]."</div>`
+  },
+  {
+    title:'Common mistakes to avoid',
+    html:`<div class="cs-alert"><b>⚠ Interaction significant?</b> Never interpret main effects globally. Every statement must say "for a given level of [other factor]." This is the most common error in the exam.</div>
+<div class="cs-alert"><b>⚠ Bonferroni: count only RELEVANT tests.</b> SAS with adjust=t gives ALL pairwise tests. You must count only the ones relevant to your specific question and multiply by that k.</div>
+<div class="cs-alert"><b>⚠ AIC/BIC comparison rules.</b> You can ONLY compare models with the same fixed effects (same predictors). Never compare an additive vs. interaction model using AIC/BIC — they have different fixed parts.</div>
+<div class="cs-alert"><b>⚠ Heteroscedastic → wrong test.</b> When told variances are unequal, do NOT use proc GLM lsmeans pairwise tests — they assume equal variances. Use Welch's t-test (proc TTEST) and apply Bonferroni manually.</div>
+<div class="cs-alert"><b>⚠ Control variable language.</b> Don't say a control variable "causes" an effect — always say it is "associated with" the response. Use causal language only for randomly assigned variables.</div>
+<div class="cs-tip"><b>✓ "For a given…" is your safety phrase.</b> Whenever both factors are in the model, always add "for a given level of [Factor B]" when discussing Factor A's effect. One phrase shows you understand the model.</div>
+<div class="cs-tip"><b>✓ Randomly assigned variables get causal language.</b> If a variable was randomly assigned in the study design, causal language is appropriate. If not → use "associated with" only.</div>
+<div class="cs-tip"><b>✓ Non-reference category slope test.</b> To directly test the effect of a continuous variable for a specific group, refit the model with that group as the reference. The main continuous variable coefficient in the new output is the test you need.</div>`
+  },
+  {
+    title:'Bonferroni quick reference',
+    html:`<table class="cs-table">
+<thead><tr><th>Number of groups (k)</th><th>Number of pairwise tests</th><th>Multiply each p by</th></tr></thead>
+<tbody>
+<tr><td>2 groups</td><td>1 pair</td><td>×1 (no correction)</td></tr>
+<tr><td>3 groups</td><td>3 pairs</td><td>×3</td></tr>
+<tr><td>4 groups</td><td>6 pairs</td><td>×6</td></tr>
+<tr><td>5 groups</td><td>10 pairs</td><td>×10</td></tr>
+</tbody></table>
+<div style="margin-top:12px;padding:10px;background:var(--s2);border-radius:7px;font-size:12.5px;line-height:1.65;color:var(--txt2);font-family:system-ui,sans-serif">
+<b style="color:var(--txt)">Understanding the formula — C(k,2):</b><br>
+C(k,2) means "combinations of k things taken 2 at a time" = the number of unique pairs you can make from k groups.<br>
+Formula: C(k,2) = k × (k−1) ÷ 2<br>
+• C(3,2) = 3 × 2 ÷ 2 = <b style="color:var(--txt)">3 pairs</b><br>
+• C(4,2) = 4 × 3 ÷ 2 = <b style="color:var(--txt)">6 pairs</b><br>
+• C(5,2) = 5 × 4 ÷ 2 = <b style="color:var(--txt)">10 pairs</b><br><br>
+
+<b style="color:var(--txt)">With interaction (2 factors) — Simple effects:</b><br>
+When interaction is significant, you test the effect of Factor A <b>separately at each level of Factor B.</b><br><br>
+<b style="color:var(--txt)">Example: 3 levels of Factor A, 2 levels of Factor B</b><br>
+• At Factor B level 1: compare all 3 levels of A pairwise → C(3,2) = 3 pairs<br>
+• At Factor B level 2: compare all 3 levels of A pairwise → C(3,2) = 3 pairs<br>
+• <b style="color:var(--txt)">Total = 3 + 3 = 6 relevant tests → multiply each p-value by 6</b><br><br>
+
+<b style="color:var(--txt)">Example: 4 levels of Factor A, 2 levels of Factor B</b><br>
+• At Factor B level 1: C(4,2) = 6 pairs<br>
+• At Factor B level 2: C(4,2) = 6 pairs<br>
+• <b style="color:var(--txt)">Total = 6 + 6 = 12 relevant tests → multiply each p-value by 12</b><br><br>
+
+<span style="color:var(--txt)"><b>Key point:</b> When testing simple effects with interaction, count pairs <em>within each subgroup</em> separately, then sum them for the total Bonferroni correction.</span>
+</div>`
+  },
+  {
+    title:'Heteroscedasticity & Welch\'s t-test',
+    full:false,
+    html:`<div class="cs-tip"><b>✓ Homoscedastic (equal variances):</b> Use the standard F-test and standard pairwise comparison tests. Results from proc GLM are valid.</div>
+<div class="cs-tip"><b>✓ Heteroscedastic (unequal variances):</b> The standard F-test and pairwise tests are not valid. Use Welch's test for the global test and Welch's t-tests for pairwise comparisons, with a Bonferroni correction applied manually.</div>
+<div class="cs-alert"><b>⚠ The exam will tell you which case you are in.</b> You only need to know which approach to apply — not how to detect it.</div>`
+  },
+  {
+    title:'Key numbers to remember',
+    html:`<div style="font-size:13px;line-height:1.8;color:var(--txt)">
+<div style="margin-bottom:10px;padding:8px 12px;background:var(--s2);border-radius:7px"><b style="font-family:system-ui,sans-serif;font-size:11px;color:var(--txt2);display:block;margin-bottom:2px">Significance level</b>α = 5% = 0.05 (default for all tests in this course)</div>
+<div style="margin-bottom:10px;padding:8px 12px;background:var(--s2);border-radius:7px"><b style="font-family:system-ui,sans-serif;font-size:11px;color:var(--txt2);display:block;margin-bottom:2px">VIF thresholds (multicollinearity)</b>VIF ≥ 4 → possible concern. VIF ≥ 10 → serious problem. Also: r ≥ 0.7–0.8 between two predictors → red flag.</div>
+<div style="margin-bottom:10px;padding:8px 12px;background:var(--s2);border-radius:7px"><b style="font-family:system-ui,sans-serif;font-size:11px;color:var(--txt2);display:block;margin-bottom:2px">AIC/BIC</b>Lower = better. Comparing two models: both AIC AND BIC should agree on the preferred model for a clear conclusion. Can only compare models with the same fixed effects.</div>
+<div style="padding:8px 12px;background:var(--s2);border-radius:7px"><b style="font-family:system-ui,sans-serif;font-size:11px;color:var(--txt2);display:block;margin-bottom:2px">CS correlation estimate ρ</b>If ρ > 0 → observations within a group are positively correlated → modeling correlation is appropriate.</div>
+</div>`
+  },
+  {
+    title:'Correlation structure decision guide',
+    html:`<table class="cs-table">
+<thead><tr><th>Situation</th><th>Structure to use</th><th>SAS option</th></tr></thead>
+<tbody>
+<tr><td>Independent observations (no grouping)</td><td>None (standard regression / proc GLM)</td><td>—</td></tr>
+<tr><td>2 measurements per subject, no time order</td><td>Compound Symmetry (CS)</td><td><code>type=CS</code></td></tr>
+<tr><td>3+ measurements per subject, time-ordered</td><td>AR(1) — correlations decay with time gap</td><td><code>type=ar(1)</code></td></tr>
+<tr><td>Grouped data (clusters), no time structure</td><td>CS or random intercept</td><td><code>type=CS</code></td></tr>
+<tr><td>Unequal variances across groups (factorial ANOVA)</td><td>Heteroscedastic via proc MIXED</td><td><code>repeated / group=factor;</code></td></tr>
+</tbody></table>
+<div class="cs-tip" style="margin-top:12px"><b>✓ Key fact:</b> With exactly 2 measurements per subject, CS and AR(1) are mathematically identical. The distinction only matters for 3+ observations per group.</div>
+<div class="cs-alert" style="margin-top:8px"><b>⚠ Remember:</b> You can only compare different correlation structures using AIC/BIC if the fixed effects (predictor terms) are the same across all models.</div>`
+  },
+  {
+    title:'4 validity conditions of linear regression',
+    html:`<table class="cs-table">
+<thead><tr><th>Condition</th><th>What it means</th><th>If violated → </th></tr></thead>
+<tbody>
+<tr><td><b>1. Linearity</b></td><td>The relationship between X and Y is truly linear</td><td>Estimates are biased → try a transformation (quadratic, inverse, log)</td></tr>
+<tr><td><b>2. Independence</b></td><td>Observations are not correlated with each other</td><td>Standard errors are wrong → use proc MIXED with a correlation structure</td></tr>
+<tr><td><b>3. Normality</b></td><td>Errors are normally distributed</td><td>Tests may be unreliable, especially in small samples</td></tr>
+<tr><td><b>4. Homoscedasticity</b></td><td>Variance of errors is constant across all X</td><td>Standard errors are wrong → Welch's test or heteroscedastic ANOVA</td></tr>
+</tbody></table>
+<div class="cs-tip" style="margin-top:12px"><b>✓ In this course:</b> You need to name all four conditions and recognize which one is violated given a description or graph. Full residual analysis is not expected, but knowing the consequences is.</div>`
+  },
+  {
+    title:'Exact sentences — correlated data & logistic regression',
+    full:true,
+    html:`<div class="cs-phrase"><span class="plab">Justifying CS for 2 measurements per subject</span>"Because two measurements were taken on each participant, their observations are not independent. A scatterplot of the two measurements per participant shows a positive association, confirming within-subject correlation. We therefore use proc MIXED with a Compound Symmetry structure."</div>
+<div class="cs-phrase"><span class="plab">Justifying AR(1) for longitudinal data (3+ time points)</span>"Because [k] measurements were taken on each participant at ordered time intervals, it is reasonable to expect that observations closer in time are more strongly correlated. We therefore use proc MIXED with an AR(1) structure, which models this decay in correlation."</div>
+<div class="cs-phrase"><span class="plab">Comparing models with AIC/BIC (agreement)</span>"Both AIC and BIC are lower for the [model name] (AIC: [value] vs. [value]; BIC: [value] vs. [value]), indicating a better fit. This, combined with the subject-matter rationale, leads us to prefer the [model name]."</div>
+<div class="cs-phrase"><span class="plab">Comparing models with AIC/BIC (disagreement)</span>"AIC favors the [model A] while BIC marginally favors the [model B]. Given this disagreement, and given [subject-matter argument], we prefer the [chosen model] on both statistical and substantive grounds."</div>
+<div class="cs-phrase"><span class="plab">Logistic — significant positive coefficient</span>"A higher [explanatory variable] is associated with a higher probability of [Y = 1], controlling for the other variables in the model. This association is statistically significant at the 5% level (p = [value])."</div>
+<div class="cs-phrase"><span class="plab">Logistic — significant negative coefficient</span>"A higher [explanatory variable] is associated with a lower probability of [Y = 1], controlling for the other variables in the model. This association is statistically significant at the 5% level (p = [value])."</div>
+<div class="cs-phrase"><span class="plab">Categorical × continuous interaction — slope for reference group</span>"For [factor = reference level], a 1-unit increase in [continuous variable] is associated with an estimated average [increase/decrease] of [|β̂|] units in [response], controlling for [other variables]. This effect is [significant / not significant] at the 5% level (p = [value])."</div>
+<div class="cs-phrase"><span class="plab">Categorical × continuous interaction — slope for non-reference group</span>"[Refit the model with the target group as reference.] For [factor = target level], a 1-unit increase in [continuous variable] is associated with an estimated average [increase/decrease] of [|β̂_new|] units in [response], controlling for [other variables]."</div>`
+  }
+];
+
+// =====================================================================
+// RENDER LOGIC
+// =====================================================================
+const TAG_COL = {
+  blue:   {bg:'#e6f1fb',t:'#0c447c'},
+  purple: {bg:'#eeedfe',t:'#3c3489'},
+  teal:   {bg:'#e1f5ee',t:'#085041'},
+  amber:  {bg:'#faeeda',t:'#633806'},
+  coral:  {bg:'#faece7',t:'#4a1b0c'},
+};
+
+function renderFC() {
+  const grid = document.getElementById('fc-grid');
+  CARDS.forEach((c, idx) => {
+    const col = TAG_COL[c.c] || TAG_COL.blue;
+    const el = document.createElement('div');
+    el.className = 'fc-card';
+    el.dataset.topic = c.topic;
+    el.dataset.index = idx;
+    
+    const isReviewed = localStorage.getItem(`fc-reviewed-${idx}`) === 'true';
+    
+    const extra = c.formula
+      ? (() => {
+          const f = c.formula;
+          let html = `<div class="fc-formula"><div class="fc-formula-eq">${f.eq}</div>`;
+          if (f.terms && f.terms.length) {
+            html += `<div class="fc-formula-terms">`;
+            f.terms.forEach(t => {
+              html += `<div class="fc-formula-term"><b>${t.sym}</b><span>${t.def}</span></div>`;
+            });
+            html += `</div>`;
+          }
+          html += `</div>`;
+          return html;
+        })()
+      : (c.eg ? `<div class="fc-eg"><b>Example:</b> ${c.eg}</div>` : '');
+    
+    el.innerHTML = `
+      <input type="checkbox" class="fc-checkbox" ${isReviewed ? 'checked' : ''}>
+      <div class="fc-inner">
+        <div class="fc-f">
+          <span class="fc-tag" style="background:${col.bg};color:${col.t}">${c.tag}</span>
+          <div class="fc-title">${c.front}</div>
+          <div class="fc-hint">Click to flip ↻</div>
+        </div>
+        <div class="fc-b">
+          <div class="fc-blabel">Explanation</div>
+          <div class="fc-btext">${c.back}${extra}</div>
+        </div>
+      </div>
+    `;
+    
+    // Flip on inner click
+    el.querySelector('.fc-inner').onclick = (e) => {
+      e.stopPropagation();
+      el.classList.toggle('flip');
+    };
+    
+    // Checkbox handling
+    const checkbox = el.querySelector('.fc-checkbox');
+    checkbox.onclick = (e) => {
+      e.stopPropagation();
+      const isChecked = checkbox.checked;
+      localStorage.setItem(`fc-reviewed-${idx}`, isChecked);
+      updateCount();
+    };
+    
+    grid.appendChild(el);
+  });
+  updateCount();
+}
+
+function updateCount() {
+  const visible = document.querySelectorAll('.fc-card:not([style*="display: none"])');
+  const reviewed = Array.from(visible).filter(c => c.querySelector('.fc-checkbox').checked).length;
+  const total = visible.length;
+  document.getElementById('fc-count').textContent = `Showing ${total} card${total!==1?'s':''} (${reviewed}/${total} reviewed)`;
+}
+
+function filterFC(topic, btn) {
+  document.querySelectorAll('.fc-fbtn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  document.querySelectorAll('.fc-card').forEach(c => {
+    const show = topic === 'all' || c.dataset.topic === topic;
+    c.style.display = show ? '' : 'none';
+  });
+  updateCount();
+}
+
+function filterStatus(status, btn) {
+  const statusBtns = btn.parentElement.querySelectorAll('button');
+  statusBtns.forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  document.querySelectorAll('.fc-card').forEach(c => {
+    const isChecked = c.querySelector('.fc-checkbox').checked;
+    if (status === 'all') {
+      c.style.display = '';
+    } else if (status === 'reviewed') {
+      c.style.display = isChecked ? '' : 'none';
+    } else if (status === 'unreviewed') {
+      c.style.display = !isChecked ? '' : 'none';
+    }
+  });
+  updateCount();
+}
+
+const BC = {blue:{bg:'#e6f1fb',t:'#0c447c'},teal:{bg:'#e1f5ee',t:'#085041'},amber:{bg:'#faeeda',t:'#633806'},purple:{bg:'#eeedfe',t:'#3c3489'},coral:{bg:'#faece7',t:'#4a1b0c'}};
+
+function renderSG() {
+  const container = document.getElementById('sg-container');
+  TASKS.forEach((task, ti) => {
+    const bc = BC[task.bc] || BC.blue;
+    let sasHTML = '';
+    if (task.sas) {
+      const imgEl = task.sas.key
+        ? `<img class="sas-img" id="sas-${ti}" src="" alt="SAS output" />`
+        : '';
+      sasHTML = `<div class="sas-wrap">
+        <div class="sas-lbl">${task.sas.label}</div>
+        ${imgEl}
+        <div class="sas-note">${task.sas.note}</div>
+      </div>`;
+    }
+    let qHTML = '';
+    task.qs.forEach((q, qi) => {
+      const id = `${ti}_${qi}`;
+      qHTML += `<div class="sg-q">${q.q}</div>
+        <textarea class="sg-ta" id="ta_${id}" placeholder="Write your answer here…"></textarea>
+        <div class="sg-btns">
+          <button class="sg-btn pri" onclick="checkSG('${id}',${ti},${qi})">Check my answer</button>
+          <button class="sg-btn" id="tbtn_${id}" onclick="toggleAns('${id}')">Show model answer</button>
+        </div>
+        <div class="sg-chk" id="chk_${id}"></div>
+        <div class="sg-ans" id="ans_${id}">
+          <div class="sg-ans-hdr">Model answer — write it exactly like this in the exam</div>
+          <div class="sg-ans-body">${q.ans}</div>
+        </div>`;
+    });
+    const el = document.createElement('div');
+    el.className = 'sg-task';
+    el.innerHTML = `<div class="sg-hdr" onclick="this.closest('.sg-task').classList.toggle('open');this.querySelector('.sg-arr').style.transform=this.closest('.sg-task').classList.contains('open')?'rotate(90deg)':''">
+        <div class="sg-num" style="background:${bc.bg};color:${bc.t}">${task.num}</div>
+        <div class="sg-ttl">${task.title}</div>
+        <span class="sg-badge" style="background:${bc.bg};color:${bc.t}">${task.badge}</span>
+        <span class="sg-arr">▶</span>
+      </div>
+      <div class="sg-body">
+        <div class="sg-ctx">${task.ctx}</div>
+        ${sasHTML}
+        ${qHTML}
+      </div>`;
+    container.appendChild(el);
+  });
+}
+
+function checkSG(id, ti, qi) {
+  const val = (document.getElementById(`ta_${id}`).value||'').toLowerCase();
+  const ans = TASKS[ti].qs[qi].ans.toLowerCase();
+  const words = ans.match(/\b\w+\b/g)||[];
+  const found = words.filter(w => w.length > 3 && val.includes(w)).length;
+  const pct = Math.round(100 * found / words.length);
+  const chk = document.getElementById(`chk_${id}`);
+  chk.style.background = pct < 40 ? 'var(--red-bg)' : pct < 70 ? 'var(--amb-bg)' : 'var(--grn-bg)';
+  chk.style.color = pct < 40 ? 'var(--red-t)' : pct < 70 ? 'var(--amb-t)' : 'var(--grn-t)';
+  chk.textContent = `${pct}% of key concepts covered. See the model answer below.`;
+  chk.classList.add('on');
+}
+
+function toggleAns(id) {
+  const ans = document.getElementById(`ans_${id}`);
+  ans.classList.toggle('on');
+}
+
+function renderCS() {
+  const grid = document.getElementById('cs-grid');
+  CHEAT_SHEET.forEach(card => {
+    const el = document.createElement('div');
+    el.className = `cs-card ${card.full ? 'full' : ''}`;
+    el.innerHTML = `<div class="cs-ctitle">${card.title}</div>${card.html}`;
+    grid.appendChild(el);
+  });
+}
+
+// =====================================================================
+// INITIALIZE
+// =====================================================================
+renderFC();
+renderSG();
+renderCS();
+</script>
+
+</body>
+</html>
