@@ -499,17 +499,20 @@ const CARDS = [
 
   { topic:'correlated', tag:'Correlated Data', c:'amber',
     front:'What is Compound Symmetry (CS)?',
-    back:`<p>Compound Symmetry (CS) is a way of describing the <b>correlation structure</b> within groups of observations.</p>
-<p>CS assumes: every pair of observations from the same person has the same correlation ρ (rho).</p>
+    back:`<p>Compound Symmetry (CS) is a structure used when modeling correlated/repeated data within groups (like multiple measurements on the same subject). <b>Compound symmetry assumes:</b>
+<br>
+• All observations within a group have the same variance<br>
+• All pairs of observations within a group have the same correlation</p>
 <p>When you only have <b>2 observations per person</b>, CS is always the right choice — because with only 2 obs, there's only one pair, so all correlation structures are equivalent.</p>
 <p>In SAS: add <code>repeated / type=CS subject=IDvariable;</code> inside proc MIXED.</p>`,
     eg:`Each participant has 2 measurements → CS is the appropriate structure → proc MIXED with type=CS.` },
 
   { topic:'correlated', tag:'Correlated Data', c:'amber',
     front:'What are AIC and BIC used for?',
-    back:`<p>AIC and BIC are <b>model comparison statistics</b>. They help you choose between two models when you can't use a simple F-test.</p>
+    back:`<p>AIC (Akaike Information Criterion) is a statistic used to <b>compare different statistical models</b> when you can't use a simple F-test.</p>
+<p>It balances fit (how well the model explains/fits the data) vs. complexity (number of parameters).</p>
+<p>BIC (Bayesian Information Criterion) is similar but gives a bigger penalty to models with more parameters.</p>
 <p>Rule: <b>lower AIC / BIC = better model</b>.</p>
-<p>They balance fit (how well the model explains the data) vs. complexity (number of parameters).</p>
 <p>⚠️ Critical rule: you can ONLY compare two models using AIC/BIC if they have the <b>same fixed effects</b> (same predictor terms). You cannot compare an additive model vs. an interaction model this way.</p>`,
     eg:`CS model: AIC = 145.3. Independence model: AIC = 162.1. → CS model is better (lower AIC).` },
 
@@ -569,8 +572,11 @@ const CARDS = [
   // ─── CORRELATED DATA — ADDITIONAL ────────────────────────────────
   { topic:'correlated', tag:'Correlated Data', c:'amber',
     front:'What is the AR(1) correlation structure, and when do you use it instead of CS?',
-    back:`<p>AR(1) (autoregressive of order 1) is a correlation structure for <strong>longitudinal data</strong> — same subjects measured at 3+ ordered time points.</p>
-<p>The key idea: observations <strong>closer in time are more strongly correlated</strong>. The correlation decays with the time gap: Corr(time i, time j) = ρ^|i−j|.</p>
+    back:`<p>AR(1) (autoregressive structure of order 1) is a correlation structure useful for <strong>longitudinal data</strong> (measurements over time on the same subjects).</p>
+<p>The key ideas:<br>
+• Observations <strong>closer in time are more strongly correlated</strong>.<br>
+• The correlation decreases as time between them increases<br>
+• Specifically, the correlation between observations is ρ raised to the power of their distance: Corr(time i, time j) = ρ^|i−j|.</p>
 <p><strong>CS vs. AR(1) decision rule:</strong><br>
 • 2 measurements per subject → CS and AR(1) are mathematically identical; use CS.<br>
 • 3+ ordered time measurements → AR(1) is usually more realistic (nearby = more correlated).<br>
@@ -972,16 +978,6 @@ const CHEAT_SHEET = [
   <td><b>With interaction</b><br>(different slopes per group)</td>
   <td style="font-family:Georgia,serif;font-size:13px">ŷ = b₀ + b₁x + b₂D + b₃(D×x)</td>
   <td>b₃ = difference in slopes between D=1 and D=0. Lines are NOT parallel.</td>
-</tr>
-<tr>
-  <td><b>Quadratic</b><br>(curved relationship)</td>
-  <td style="font-family:Georgia,serif;font-size:13px">ŷ = b₀ + b₁x + b₂x²</td>
-  <td>Create x² in a data step. b₂ &lt; 0 = peak; b₂ &gt; 0 = valley.</td>
-</tr>
-<tr>
-  <td><b>3-level factor (k−1 = 2 indicators)</b></td>
-  <td style="font-family:Georgia,serif;font-size:13px">ŷ = b₀ + b₁D₁ + b₂D₂ + b₃x</td>
-  <td>Ref group: ŷ = b₀ + b₃x. Group 1: intercept shifts by b₁. Group 2: shifts by b₂.</td>
 </tr>
 </tbody></table>
 <div style="margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:10px">
