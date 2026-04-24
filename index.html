@@ -260,8 +260,7 @@ const CARDS = [
     front:'Homoscedastic vs. Heteroscedastic — what\'s the difference?',
     back:`<p><b>Homoscedastic</b> = the groups have roughly <b>equal variances</b>. This is assumed by default in proc GLM — standard F-tests and pairwise comparisons are valid.</p>
 <p><b>Heteroscedastic</b> = the groups have <b>different variances</b>.</p>
-<p>Why does it matter? Standard ANOVA tests assume equal variances. When you are told the data are heteroscedastic, use <b>Welch's test</b> instead — it does not require equal variances.</p>
-<p>⚠️ The exam will tell you which case you are in. Your job is to know what to do with that information.</p>`,
+<p>Why does it matter? Standard ANOVA tests assume equal variances. When you are told the data are heteroscedastic, use <b>Welch's test</b> instead — it does not require equal variances.</p>`,
     eg:`"The variances are unequal across groups" → use Welch's test (proc TTEST for pairwise) + Bonferroni correction. Do NOT use the standard F-test or proc GLM pairwise tests.` },
 
   { topic:'anova', tag:'ANOVA', c:'blue',
@@ -1073,8 +1072,7 @@ When interaction is significant, you test the effect of Factor A <b>separately a
     title:'Heteroscedasticity & Welch\'s t-test',
     full:false,
     html:`<div class="cs-tip"><b>✓ Homoscedastic (equal variances):</b> Use the standard F-test and standard pairwise comparison tests. Results from proc GLM are valid.</div>
-<div class="cs-tip"><b>✓ Heteroscedastic (unequal variances):</b> The standard F-test and pairwise tests are not valid. Use Welch's test for the global test and Welch's t-tests for pairwise comparisons, with a Bonferroni correction applied manually.</div>
-<div class="cs-alert"><b>⚠ The exam will tell you which case you are in.</b> You only need to know which approach to apply — not how to detect it.</div>`
+<div class="cs-tip"><b>✓ Heteroscedastic (unequal variances):</b> The standard F-test and pairwise tests are not valid. Use Welch's test for the global test and Welch's t-tests for pairwise comparisons, with a Bonferroni correction applied manually.`
   },
   {
     title:'Key numbers to remember',
